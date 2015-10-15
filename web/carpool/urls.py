@@ -1,8 +1,16 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from rest_framework.routers import DefaultRouter
+
 from . import views
 
 
+router = DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'carpools', views.CarpoolViewSet, base_name='carpool')
+router.register(r'responses', views.ResponseViewSet)
+router.register(r'replies', views.ReplyViewSet)
+
 urlpatterns = [
-#    url(r'^$', views.index, name='index'),
-#    url(r'^$', views.classview.as_view(), name='index'),
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

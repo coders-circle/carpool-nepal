@@ -28,8 +28,7 @@ class Carpool(models.Model):
     description = models.TextField()
     seats = models.IntegerField(default=1)
     poster = models.ForeignKey(User)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    time = models.TimeField()
     date = models.DateField()
 
     def __str__(self):
@@ -45,8 +44,8 @@ class Response(models.Model):
         (1, 'Urgent'),
     )
 
-    carpool = models.ForeignKey(Carpool)
-    responder = models.ForeignKey(User)
+    carpool = models.ForeignKey(Carpool, related_name='responses')
+    poster = models.ForeignKey(User)
     urgency = models.IntegerField(default=0, choices=urgency_types)
     message = models.TextField()
 
@@ -56,7 +55,8 @@ class Response(models.Model):
 
 class Reply(models.Model):
     message = models.TextField()
-    response = models.ForeignKey(Response)
+    poster = models.ForeignKey(User)
+    response = models.ForeignKey(Response, related_name='replies')
 
     def __str__(self):
         return self.message

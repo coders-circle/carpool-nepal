@@ -18,6 +18,8 @@ from django.contrib import admin
 from carpool import urls as carpool_urls
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^carpool/', include(carpool_urls)),
+
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^nested_admin/', include('nested_admin.urls')),
 ]

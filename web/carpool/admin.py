@@ -1,25 +1,23 @@
 from django.contrib import admin
+import nested_admin
+
 from .models import *
 
 
-class ReplyInline(admin.StackedInline):
+class ReplyInline(nested_admin.NestedStackedInline):
     model = Reply
     extra = 1
 
 
-class ResponseAdmin(admin.ModelAdmin):
+class ResponseInline(nested_admin.NestedStackedInline):
+    model = Response
+    extra = 2
     inlines = [ReplyInline]
 
 
-class ResponseInline(admin.StackedInline):
-    model = Response
-    extra = 2
-
-
-class CarpoolAdmin(admin.ModelAdmin):
+class CarpoolAdmin(nested_admin.NestedAdmin):
     inlines = [ResponseInline]
 
 
 admin.site.register(User)
 admin.site.register(Carpool, CarpoolAdmin)
-admin.site.register(Response, ResponseAdmin)
