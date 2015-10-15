@@ -48,6 +48,7 @@ class Response(models.Model):
     poster = models.ForeignKey(User)
     urgency = models.IntegerField(default=0, choices=urgency_types)
     message = models.TextField()
+    posted_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.message
@@ -57,6 +58,7 @@ class Reply(models.Model):
     message = models.TextField()
     poster = models.ForeignKey(User)
     response = models.ForeignKey(Response, related_name='replies')
+    posted_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.message

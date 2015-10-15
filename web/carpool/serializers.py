@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ReplyMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
-        fields = ('id', 'poster', 'message')
+        fields = ('id', 'poster', 'message', 'posted_on')
 
 
 class ResponseMiniSerializer(serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class ResponseMiniSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Response
-        fields = ('id', 'poster', 'urgency', 'message', 'replies')
+        fields = ('id', 'poster', 'urgency', 'message', 'replies', 'posted_on')
 
 
 class CarpoolSerializer(serializers.ModelSerializer):
@@ -46,13 +46,10 @@ class ResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Response
-        fields = ('id', 'carpool', 'poster', 'urgency', 'message', 'replies')
+        fields = ('id', 'carpool', 'poster', 'urgency', 'message', 'replies', 'posted_on')
 
 
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
-        fields = ('id', 'poster', 'message', 'response')
-
-
-
+        fields = ('id', 'poster', 'message', 'response', 'posted_on')
