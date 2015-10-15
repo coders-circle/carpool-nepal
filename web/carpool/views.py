@@ -1,14 +1,26 @@
 from django.shortcuts import render
 from django.db.models import Q
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, views, authentication
 from rest_framework.response import Response as RestResponse
 
 from .models import *
 from .serializers import *
-from .permissions import IsOwnerOrReadOnly
+from .permissions import *
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class AuthView(views.APIView):
+    authentication_classes = (authentication.SessionAuthentication, authentication.BasicAuthentication)
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get(self, request, format=None):
+        content = {
+            "user": str(request.user),
+            "auth": str(request.auth)
+        }
+        return RestResponse(content)
+
+
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
