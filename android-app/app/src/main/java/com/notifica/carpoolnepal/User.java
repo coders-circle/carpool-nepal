@@ -7,7 +7,7 @@ public class User extends SugarRecord<User> {
     String lastName;
     String userName;
     String email;
-    String contactNumber;
+    Long contactNumber;
     String contactAddress;
 
     long remote_id;

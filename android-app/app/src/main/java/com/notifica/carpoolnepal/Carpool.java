@@ -8,6 +8,7 @@ public class Carpool extends SugarRecord<Carpool> {
     String destination;
     String description;
     int seats;
+    int status;
     User poster;
     long time;
     long date;
