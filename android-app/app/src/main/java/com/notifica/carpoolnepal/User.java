@@ -9,4 +9,6 @@ public class User extends SugarRecord<User> {
     String email;
     String contactNumber;
     String contactAddress;
+
+    long remote_id;
 }

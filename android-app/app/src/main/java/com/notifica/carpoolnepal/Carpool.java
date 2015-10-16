@@ -11,4 +11,6 @@ public class Carpool extends SugarRecord<Carpool> {
     User poster;
     long time;
     long date;
+
+    long remote_id;
 }

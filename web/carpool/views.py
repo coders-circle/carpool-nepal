@@ -7,6 +7,8 @@ from .models import *
 from .serializers import *
 from .permissions import *
 
+import re
+
 
 class AuthView(views.APIView):
     authentication_classes = (authentication.SessionAuthentication, authentication.BasicAuthentication)
@@ -36,7 +38,9 @@ class CarpoolViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         location = self.request.GET.get("location")
         if location and location != "":
-            queryset = Carpool.objects.filter(Q(source__iexact=location) | Q(destination__iexact=location))
+            words = re.sub("[^\S]", " ", location).split()
+            regexstring = r'(' + '|'.join([re.escape(n) for n in words]) + ')'
+            queryset = Carpool.objects.filter(Q(source__iregex=regexstring) | Q(destination__iregex=regexstring))
         else:
             queryset = Carpool.objects.all()
 

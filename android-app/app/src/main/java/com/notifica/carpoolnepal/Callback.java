@@ -1,5 +1,7 @@
 package com.notifica.carpoolnepal;
 
+import org.json.JSONObject;
+
 public interface Callback {
-    void onComplete(boolean success, String response);
+    void onComplete(JSONObject response);
 }

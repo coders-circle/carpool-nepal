@@ -11,6 +11,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -22,15 +23,23 @@ public class NetworkHandler {
     private final String BASE_URL = "http://192.168.0.40:8000/carpool/";
     public final String ERR_CONNECTION = "{ \"detail\": \"Error on connection.\" }";
     public final String ERR_RESPONSE = "{ \"detail\": \"Unknown response from server.\" }";
+    public JSONObject ERR_RESPONSE_JSON;
 
     private final String username, password;
 
     public NetworkHandler(String username, String password) {
         this.username = username;
         this.password = password;
+
+        try {
+            ERR_RESPONSE_JSON = new JSONObject(ERR_RESPONSE);
+        } catch (JSONException e) {
+            ERR_RESPONSE_JSON = new JSONObject();
+            e.printStackTrace();
+        }
     }
 
-    private String Get(String url) {
+    private JSONObject Get(String url) {
         HttpClient client = new DefaultHttpClient();
         HttpResponse response;
         String result = "";
@@ -54,16 +63,17 @@ public class NetworkHandler {
             result = ERR_CONNECTION;
         }
 
+        JSONObject jsonResult;
         try {
-            new JSONObject(result);
+            jsonResult = new JSONObject(result);
         } catch (Exception e) {
             e.printStackTrace();
-            result = ERR_RESPONSE;
+            jsonResult = ERR_RESPONSE_JSON;
         }
-        return result;
+        return jsonResult;
     }
 
-    public String Post(String address, JSONObject jsonObject) {
+    public JSONObject Post(String address, JSONObject jsonObject) {
         HttpClient client = new DefaultHttpClient();
         HttpResponse response;
         String result = "";
@@ -88,17 +98,17 @@ public class NetworkHandler {
             result = ERR_CONNECTION;
         }
 
+        JSONObject jsonResult;
         try {
-            new JSONObject(result);
+            jsonResult = new JSONObject(result);
         } catch (Exception e) {
             e.printStackTrace();
-            result = ERR_RESPONSE;
+            jsonResult = ERR_RESPONSE_JSON;
         }
-
-        return result;
+        return jsonResult;
     }
 
-    public String Put(String address, JSONObject jsonObject) {
+    public JSONObject Put(String address, JSONObject jsonObject) {
         HttpClient client = new DefaultHttpClient();
         HttpResponse response;
         String result = "";
@@ -123,17 +133,17 @@ public class NetworkHandler {
             result = ERR_CONNECTION;
         }
 
+        JSONObject jsonResult;
         try {
-            new JSONObject(result);
+            jsonResult = new JSONObject(result);
         } catch (Exception e) {
             e.printStackTrace();
-            result = ERR_RESPONSE;
+            jsonResult = ERR_RESPONSE_JSON;
         }
-
-        return result;
+        return jsonResult;
     }
 
-    private String Delete(String url) {
+    private JSONObject Delete(String url) {
         HttpClient client = new DefaultHttpClient();
         HttpResponse response;
         String result = "";
@@ -157,91 +167,91 @@ public class NetworkHandler {
             result = ERR_CONNECTION;
         }
 
+        JSONObject jsonResult;
         try {
-            new JSONObject(result);
+            jsonResult = new JSONObject(result);
         } catch (Exception e) {
             e.printStackTrace();
-            result = ERR_RESPONSE;
+            jsonResult = ERR_RESPONSE_JSON;
         }
-
-        return result;
+        return jsonResult;
     }
 
     public void GetAsync(final String url, final Callback callback) {
-        class GetAsyncTask extends AsyncTask<Void, Void, String> {
+        class GetAsyncTask extends AsyncTask<Void, Void, JSONObject> {
 
             @Override
-            protected String doInBackground(Void... params) {
+            protected JSONObject doInBackground(Void... params) {
                 return Get(url);
             }
 
             @Override
-            protected void onPostExecute(String result) {
+            protected void onPostExecute(JSONObject result) {
                 if (callback != null)
                 if (result.equals(ERR_CONNECTION))
-                    callback.onComplete(false, result);
+                    callback.onComplete(result);
                 else
-                    callback.onComplete(true, result);
+                    callback.onComplete(result);
             }
         }
         new GetAsyncTask().execute();
     }
 
     public void PostAsync(final String url, final JSONObject data, final Callback callback) {
-        class GetAsyncTask extends AsyncTask<Void, Void, String> {
+        class GetAsyncTask extends AsyncTask<Void, Void, JSONObject> {
 
             @Override
-            protected String doInBackground(Void... params) {
+            protected JSONObject doInBackground(Void... params) {
                 return Post(url, data);
             }
 
             @Override
-            protected void onPostExecute(String result) {
+            protected void onPostExecute(JSONObject result) {
                 if (callback != null)
                 if (result.equals(ERR_CONNECTION))
-                    callback.onComplete(false, result);
+                    callback.onComplete(result);
                 else
-                    callback.onComplete(true, result);
+                    callback.onComplete(result);
             }
         }
         new GetAsyncTask().execute();
     }
 
     public void PutAsync(final String url, final JSONObject data, final Callback callback) {
-        class GetAsyncTask extends AsyncTask<Void, Void, String> {
+        class GetAsyncTask extends AsyncTask<Void, Void, JSONObject> {
 
             @Override
-            protected String doInBackground(Void... params) {
+            protected JSONObject doInBackground(Void... params) {
                 return Put(url, data);
             }
 
             @Override
-            protected void onPostExecute(String result) {
+            protected void onPostExecute(JSONObject result) {
                 if (callback != null)
                 if (result.equals(ERR_CONNECTION))
-                    callback.onComplete(false, result);
+                    callback.onComplete(result);
                 else
-                    callback.onComplete(true, result);
+                    callback.onComplete(result);
             }
         }
         new GetAsyncTask().execute();
     }
 
     public void DeleteAsync(final String url, final Callback callback) {
-        class GetAsyncTask extends AsyncTask<Void, Void, String> {
+        class GetAsyncTask extends AsyncTask<Void, Void, JSONObject> {
 
             @Override
-            protected String doInBackground(Void... params) {
+            protected JSONObject doInBackground(Void... params) {
                 return Delete(url);
             }
 
             @Override
-            protected void onPostExecute(String result) {
+            protected void onPostExecute(JSONObject result) {
                 if (callback != null)
                 if (result.equals(ERR_CONNECTION))
-                    callback.onComplete(false, result);
+                    callback.onComplete(result);
                 else
-                    callback.onComplete(true, result);
+                    callback.onComplete(result);
             }
         }
         new GetAsyncTask().execute();

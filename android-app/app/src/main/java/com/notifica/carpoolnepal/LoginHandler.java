@@ -1,5 +1,6 @@
 package com.notifica.carpoolnepal;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginHandler {
@@ -9,7 +10,7 @@ public class LoginHandler {
     {"user":"TestUser","auth":"None"} on success
     {"detail":"Error-String"} on failure
      */
-    public void Login(String username, String password, Callback callback) {
+    public static void Login(String username, String password, Callback callback) {
         NetworkHandler handler = new NetworkHandler(username, password);
         handler.GetAsync("authenticate", callback);
     }
@@ -19,7 +20,7 @@ public class LoginHandler {
     User details on success ({ "user" : {...}, "id":.., "contact_number":..., "contact_address":... })
     {"detail":"Error-String"} on failure
     */
-    public void Register(String username, String password,
+    public static void Register(String username, String password,
                          String firstName, String lastName, String email,
                          int contactNumber, String contactAddress,
                          Callback callback) {
@@ -51,8 +52,15 @@ public class LoginHandler {
             NetworkHandler handler = new NetworkHandler("nothing", "nothing");
             handler.PostAsync("users", data, callback);
         } catch (Exception ex) {
-            if (callback != null)
-                callback.onComplete(false, "{ \"detail\": \"Error creating registration data.\" }");
+            if (callback != null) {
+                JSONObject registerErr = new JSONObject();
+                try {
+                    registerErr = new JSONObject("{ \"detail\": \"Error creating registration data.\" }");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                callback.onComplete(registerErr);
+            }
         }
 
     }
