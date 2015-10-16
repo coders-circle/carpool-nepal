@@ -8,4 +8,6 @@ public class Response extends SugarRecord<Response> {
     int urgency;
     String message;
     long posted_on;
+
+    long remote_id = -1;
 }

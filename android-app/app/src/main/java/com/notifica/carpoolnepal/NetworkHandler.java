@@ -98,13 +98,7 @@ public class NetworkHandler {
             @Override
             protected void onPostExecute(String result) {
                 if (callback != null)
-                    callback.onComplete(false, result);
-            }
-
-            @Override
-            protected void onCancelled() {
-                if (callback != null)
-                    callback.onComplete(true, null);
+                    callback.onComplete(result);
             }
         }
         new GetAsyncTask().execute();
@@ -121,13 +115,7 @@ public class NetworkHandler {
             @Override
             protected void onPostExecute(String result) {
                 if (callback != null)
-                    callback.onComplete(false, result);
-            }
-
-            @Override
-            protected void onCancelled() {
-                if (callback != null)
-                    callback.onComplete(true, null);
+                    callback.onComplete(result);
             }
         }
         new GetAsyncTask().execute();
@@ -144,13 +132,7 @@ public class NetworkHandler {
             @Override
             protected void onPostExecute(String result) {
                 if (callback != null)
-                    callback.onComplete(false, result);
-            }
-
-            @Override
-            protected void onCancelled() {
-                if (callback != null)
-                    callback.onComplete(true, null);
+                    callback.onComplete(result);
             }
         }
         new GetAsyncTask().execute();
@@ -167,13 +149,7 @@ public class NetworkHandler {
             @Override
             protected void onPostExecute(String result) {
                 if (callback != null)
-                    callback.onComplete(false, result);
-            }
-
-            @Override
-            protected void onCancelled() {
-                if (callback != null)
-                    callback.onComplete(true, null);
+                    callback.onComplete(result);
             }
         }
         new GetAsyncTask().execute();

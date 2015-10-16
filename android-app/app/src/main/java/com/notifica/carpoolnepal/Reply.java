@@ -7,4 +7,6 @@ public class Reply extends SugarRecord<Reply> {
     User poster;
     Response response;
     long posted_on;
+
+    long remote_id = -1;
 }

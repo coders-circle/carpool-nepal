@@ -116,25 +116,22 @@ public class LoginActivity extends Activity {
 
             LoginHandler.Login(email, password, new Callback() {
                 @Override
-                public void onComplete(boolean cancelled, String response) {
+                public void onComplete(String response) {
                     showProgress(false);
                     String error = "";
-
-                    if (!cancelled) {
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            if (object.optString("user").equals(email))
-                                finish();
-                            else
-                                error = object.optString("detail");
-                        } catch (JSONException e) {
-                            error = "Invalid response from server";
-                            e.printStackTrace();
-                        }
-
-                        if (!error.equals(""))
-                            Toast.makeText(LoginActivity.this, "Error logging\n" + error, Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        if (object.optString("user").equals(email))
+                            finish();
+                        else
+                            error = object.optString("detail");
+                    } catch (JSONException e) {
+                        error = "Invalid response from server";
+                        e.printStackTrace();
                     }
+
+                    if (!error.equals(""))
+                        Toast.makeText(LoginActivity.this, "Error logging\n" + error, Toast.LENGTH_LONG).show();
                 }
             });
         }

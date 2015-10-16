@@ -53,7 +53,7 @@ public class LoginHandler {
             handler.PostAsync("users/", data, callback);
         } catch (Exception ex) {
             if (callback != null) {
-                callback.onComplete(false, "{ \"detail\": \"Error creating registration data.\" }");
+                callback.onComplete("{ \"detail\": \"Error creating registration data.\" }");
             }
         }
 

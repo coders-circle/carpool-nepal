@@ -26,6 +26,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ReplyMiniSerializer(serializers.ModelSerializer):
+    poster = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Reply
         fields = ('id', 'poster', 'message', 'posted_on')
@@ -49,7 +51,8 @@ class CarpoolSerializer(serializers.ModelSerializer):
 
 
 class ResponseSerializer(serializers.ModelSerializer):
-    replies = ReplyMiniSerializer(many=True)
+    poster = serializers.PrimaryKeyRelatedField(read_only=True)
+    replies = ReplyMiniSerializer(many=True, read_only=True)
 
     class Meta:
         model = Response
@@ -57,6 +60,8 @@ class ResponseSerializer(serializers.ModelSerializer):
 
 
 class ReplySerializer(serializers.ModelSerializer):
+    poster = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Reply
         fields = ('id', 'poster', 'message', 'response', 'posted_on')

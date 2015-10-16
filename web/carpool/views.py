@@ -51,6 +51,10 @@ class ResponseViewSet(viewsets.ModelViewSet):
     serializer_class = ResponseSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
+    def perform_create(self, serializer):
+        user = User.objects.filter(user=self.request.user).get()
+        serializer.save(poster=user)
+
     def get_queryset(self):
         carpool_id = self.request.GET.get("carpool")
         if carpool_id:
@@ -65,3 +69,7 @@ class ReplyViewSet(viewsets.ModelViewSet):
     queryset = Reply.objects.all()
     serializer_class = ReplySerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    
+    def perform_create(self, serializer):
+        user = User.objects.filter(user=self.request.user).get()
+        serializer.save(poster=user)
