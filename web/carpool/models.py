@@ -22,11 +22,18 @@ class Carpool(models.Model):
         (1, 'Request'),
     )
 
+    status_types = (
+        (0, 'Open'),
+        (1, 'Pending'),
+        (2, 'Closed'),
+    )
+
     carpool_type = models.IntegerField(default=0, choices=carpool_types)
     source = models.CharField(max_length=100)
     destination = models.CharField(max_length=100)
     description = models.TextField()
     seats = models.IntegerField(default=1)
+    status = models.IntegerField(default=0, choices=status_types)
     poster = models.ForeignKey(User)
     time = models.TimeField()
     date = models.DateField()

@@ -10,5 +10,5 @@ public class User extends SugarRecord<User> {
     Long contactNumber;
     String contactAddress;
 
-    long remote_id;
+    long remoteId;
 }

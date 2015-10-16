@@ -37,6 +37,7 @@ public class CarpoolHandler {
             carpoolObj.put("destination", carpool.destination);
             carpoolObj.put("description", carpool.description);
             carpoolObj.put("seats", carpool.seats);
+            carpoolObj.put("status", carpool.status);
             carpoolObj.put("time", LongToTime(carpool.time));
             carpoolObj.put("date", LongToDate(carpool.date));
         } catch (JSONException e) {
@@ -53,7 +54,7 @@ public class CarpoolHandler {
                     if (responseObj.has("detail"))
                         result = responseObj.getString("detail");
                     else {
-                        carpool.remote_id = responseObj.getLong("id");
+                        carpool.remoteId = responseObj.getLong("id");
                         carpool.save();
                         result = "Success";
                     }
@@ -66,10 +67,10 @@ public class CarpoolHandler {
             }
         };
 
-        if (carpool.remote_id < 0)
+        if (carpool.remoteId < 0)
             handler.PostAsync("carpools/", carpoolObj, cb);
         else
-            handler.PutAsync("carpools/" + carpool.remote_id + "/", carpoolObj, cb);
+            handler.PutAsync("carpools/" + carpool.remoteId + "/", carpoolObj, cb);
     }
 
     public void PostCarpool(final Response response, final Callback callback) {
@@ -77,7 +78,7 @@ public class CarpoolHandler {
 
         JSONObject responseObj = new JSONObject();
         try {
-            responseObj.put("carpool", response.carpool.remote_id);
+            responseObj.put("carpool", response.carpool.remoteId);
             responseObj.put("urgency", response.urgency);
             responseObj.put("message", response.message);
         } catch (JSONException e) {
@@ -94,7 +95,7 @@ public class CarpoolHandler {
                     if (responseObj.has("detail"))
                         result = responseObj.getString("detail");
                     else {
-                        response.remote_id = responseObj.getLong("id");
+                        response.remoteId = responseObj.getLong("id");
                         response.save();
                         result = "Success";
                     }
@@ -107,10 +108,10 @@ public class CarpoolHandler {
             }
         };
 
-        if (response.remote_id < 0)
+        if (response.remoteId < 0)
             handler.PostAsync("responses/", responseObj, cb);
         else
-            handler.PutAsync("responses/" + response.remote_id + "/", responseObj, cb);
+            handler.PutAsync("responses/" + response.remoteId + "/", responseObj, cb);
     }
 
     public void PostCarpool(final Reply reply, final Callback callback) {
@@ -118,7 +119,7 @@ public class CarpoolHandler {
 
         JSONObject replyObj = new JSONObject();
         try {
-            replyObj.put("response", reply.response.remote_id);
+            replyObj.put("response", reply.response.remoteId);
             replyObj.put("message", reply.message);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -134,7 +135,7 @@ public class CarpoolHandler {
                     if (responseObj.has("detail"))
                         result = responseObj.getString("detail");
                     else {
-                        reply.remote_id = responseObj.getLong("id");
+                        reply.remoteId = responseObj.getLong("id");
                         reply.save();
                         result = "Success";
                     }
@@ -147,10 +148,10 @@ public class CarpoolHandler {
             }
         };
 
-        if (reply.remote_id < 0)
+        if (reply.remoteId < 0)
             handler.PostAsync("replies/", replyObj, cb);
         else
-            handler.PutAsync("replies/" + reply.remote_id + "/", replyObj, cb);
+            handler.PutAsync("replies/" + reply.remoteId + "/", replyObj, cb);
     }
 
     private User AddUser(long remote_id) {
@@ -158,7 +159,7 @@ public class CarpoolHandler {
         User user;
         if (users.size() == 0) {
             user = new User();
-            user.remote_id = remote_id;
+            user.remoteId = remote_id;
             user.save();
         }
         else
@@ -179,19 +180,25 @@ public class CarpoolHandler {
             public void onComplete(String response) {
                 try {
                     JSONArray carpools = new JSONArray(response);
-                    DatabaseHelper.deleteAllCarpools();
+                    //DatabaseHelper.deleteAllCarpools();
 
                     for (int i = 0; i < carpools.length(); ++i) {
                         JSONObject carpool = carpools.optJSONObject(i);
                         if (carpool != null) {
                             Carpool cp = new Carpool();
 
-                            cp.remote_id = carpool.optLong("id");
+                            cp.remoteId = carpool.optLong("id");
+
+                            List<Carpool> ocps = Carpool.find(Carpool.class, "remote_id=?", cp.remoteId+"");
+                            if (ocps.size() > 0)
+                                ocps.get(0).delete();
+
                             cp.type = carpool.optInt("carpool_type");
                             cp.source = carpool.optString("source");
                             cp.destination = carpool.optString("destination");
                             cp.description = carpool.optString("description");
                             cp.seats = carpool.optInt("seats");
+                            cp.status = carpool.optInt("status");
 
                             cp.time = TimeToLong(carpool.optString("time"));
                             cp.date = DateToLong(carpool.optString("date"));
@@ -212,7 +219,7 @@ public class CarpoolHandler {
         String url = "responses/";
 
         if (carpool != null)
-            url += "?carpool=" + carpool.remote_id;
+            url += "?carpool=" + carpool.remoteId;
 
         NetworkHandler handler = new NetworkHandler(mUsername, mPassword);
         handler.GetAsync(url, new Callback() {
@@ -225,13 +232,13 @@ public class CarpoolHandler {
                     if (carpool == null)
                         Response.deleteAll(Response.class);
                     else
-                        Response.deleteAll(Response.class, "carpool=?", carpool.remote_id+"");
+                        Response.deleteAll(Response.class, "carpool=?", carpool.remoteId +"");
 
                     for (int i=0; i<responses.length(); ++i) {
                         JSONObject responseObj = responses.optJSONObject(i);
                         if (responseObj != null) {
                             Response response = new Response();
-                            response.remote_id = responseObj.optLong("id");
+                            response.remoteId = responseObj.optLong("id");
                             response.carpool = carpool;
                             response.posted_on = DateTimeToLong(responseObj.optString("posted_on"));
                             response.poster = AddUser(responseObj.optLong("poster"));
@@ -244,7 +251,7 @@ public class CarpoolHandler {
                             for (int j=0; j<replies.length(); ++j) {
                                 JSONObject replyObj = replies.optJSONObject(j);
                                 Reply reply = new Reply();
-                                reply.remote_id = replyObj.optLong("id");
+                                reply.remoteId = replyObj.optLong("id");
                                 reply.response = response;
                                 reply.posted_on = DateTimeToLong(replyObj.optString("posted_on"));
                                 reply.message = replyObj.optString("message");
@@ -276,7 +283,7 @@ public class CarpoolHandler {
                         User user;
                         if (users.size() == 0) {
                             user = new User();
-                            user.remote_id = userId;
+                            user.remoteId = userId;
                         }
                         else
                             user = users.get(0);

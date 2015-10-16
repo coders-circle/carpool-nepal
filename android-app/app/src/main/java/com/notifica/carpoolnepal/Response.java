@@ -9,5 +9,5 @@ public class Response extends SugarRecord<Response> {
     String message;
     long posted_on;
 
-    long remote_id = -1;
+    long remoteId = -1;
 }

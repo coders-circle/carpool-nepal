@@ -13,5 +13,5 @@ public class Carpool extends SugarRecord<Carpool> {
     long time;
     long date;
 
-    long remote_id = -1;
+    long remoteId = -1;
 }
