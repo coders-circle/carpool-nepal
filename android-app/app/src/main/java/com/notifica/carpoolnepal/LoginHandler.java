@@ -12,7 +12,7 @@ public class LoginHandler {
      */
     public static void Login(String username, String password, Callback callback) {
         NetworkHandler handler = new NetworkHandler(username, password);
-        handler.GetAsync("authenticate", callback);
+        handler.GetAsync("authenticate/", callback);
     }
 
     /*
@@ -50,16 +50,10 @@ public class LoginHandler {
             data.put("contact_address", contactAddress);
 
             NetworkHandler handler = new NetworkHandler("nothing", "nothing");
-            handler.PostAsync("users", data, callback);
+            handler.PostAsync("users/", data, callback);
         } catch (Exception ex) {
             if (callback != null) {
-                JSONObject registerErr = new JSONObject();
-                try {
-                    registerErr = new JSONObject("{ \"detail\": \"Error creating registration data.\" }");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                callback.onComplete(registerErr);
+                callback.onComplete(false, "{ \"detail\": \"Error creating registration data.\" }");
             }
         }
 

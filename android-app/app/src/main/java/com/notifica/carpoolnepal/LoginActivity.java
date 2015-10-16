@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -115,12 +116,24 @@ public class LoginActivity extends Activity {
 
             LoginHandler.Login(email, password, new Callback() {
                 @Override
-                public void onComplete(JSONObject response) {
+                public void onComplete(boolean cancelled, String response) {
                     showProgress(false);
-                    if (response.optString("user").equals(email)) {
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Error logging\n" + response.optString("detail"), Toast.LENGTH_LONG).show();
+                    String error = "";
+
+                    if (!cancelled) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            if (object.optString("user").equals(email))
+                                finish();
+                            else
+                                error = object.optString("detail");
+                        } catch (JSONException e) {
+                            error = "Invalid response from server";
+                            e.printStackTrace();
+                        }
+
+                        if (!error.equals(""))
+                            Toast.makeText(LoginActivity.this, "Error logging\n" + error, Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -129,12 +142,12 @@ public class LoginActivity extends Activity {
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.length() > 4;
+        return email.length() > 3;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 3;
     }
 
     /**

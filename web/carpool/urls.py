@@ -7,7 +7,7 @@ from . import views
 router = DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'carpools', views.CarpoolViewSet, base_name='carpool')
-router.register(r'responses', views.ResponseViewSet)
+router.register(r'responses', views.ResponseViewSet, base_name='response')
 router.register(r'replies', views.ReplyViewSet)
 
 urlpatterns = [

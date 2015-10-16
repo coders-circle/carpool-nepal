@@ -48,9 +48,17 @@ class CarpoolViewSet(viewsets.ModelViewSet):
 
 
 class ResponseViewSet(viewsets.ModelViewSet):
-    queryset = Response.objects.all()
     serializer_class = ResponseSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+    def get_queryset(self):
+        carpool_id = self.request.GET.get("carpool")
+        if carpool_id:
+            queryset = Response.objects.filter(carpool__pk=carpool_id)
+        else:
+            queryset = Response.objects.all()
+
+        return queryset
 
 
 class ReplyViewSet(viewsets.ModelViewSet):

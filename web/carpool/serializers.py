@@ -29,23 +29,23 @@ class ReplyMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
         fields = ('id', 'poster', 'message', 'posted_on')
-
-
-class ResponseMiniSerializer(serializers.ModelSerializer):
-    replies = ReplyMiniSerializer(many=True)
-
-    class Meta:
-        model = Response
-        fields = ('id', 'poster', 'urgency', 'message', 'replies', 'posted_on')
-
+ 
+ 
+# class ResponseMiniSerializer(serializers.ModelSerializer):
+#     replies = ReplyMiniSerializer(many=True)
+# 
+#     class Meta:
+#         model = Response
+#         fields = ('id', 'poster', 'urgency', 'message', 'replies', 'posted_on')
+ 
 
 class CarpoolSerializer(serializers.ModelSerializer):
     poster = serializers.PrimaryKeyRelatedField(read_only=True)
-    responses = ResponseMiniSerializer(many=True)
+    # responses = ResponseMiniSerializer(many=True)
 
     class Meta:
         model = Carpool
-        fields = ('id', 'carpool_type', 'source', 'destination', 'description', 'seats', 'poster', 'time', 'date', 'responses')
+        fields = ('id', 'carpool_type', 'source', 'destination', 'description', 'seats', 'poster', 'time', 'date') #, 'responses')
 
 
 class ResponseSerializer(serializers.ModelSerializer):
