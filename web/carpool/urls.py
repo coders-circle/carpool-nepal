@@ -9,6 +9,7 @@ router.register(r'users', views.UserViewSet)
 router.register(r'carpools', views.CarpoolViewSet, base_name='carpool')
 router.register(r'responses', views.ResponseViewSet, base_name='response')
 router.register(r'replies', views.ReplyViewSet)
+router.register(r'gcm-registrations', views.GcmRegistrationViewSet, base_name='gcm-registration')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

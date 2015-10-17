@@ -73,3 +73,20 @@ class ReplyViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = User.objects.filter(user=self.request.user).get()
         serializer.save(poster=user)
+
+
+class GcmRegistrationViewSet(viewsets.ModelViewSet):
+    serializer_class = GcmRegistrationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+    def perform_create(self, serializer):
+        user = User.objects.filter(user=self.request.user).get()
+        serializer.save(user=user)
+
+    def get_queryset(self):
+        device_id = self.request.GET.get("device")
+        if device_id:
+            queryset = GcmRegistration.objects.filter(device_id=device_id)
+        else:
+            queryset = GcmRegistration.objects.all()
+        return queryset

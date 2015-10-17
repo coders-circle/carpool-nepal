@@ -65,3 +65,11 @@ class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
         fields = ('id', 'poster', 'message', 'response', 'posted_on')
+
+
+class GcmRegistrationSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = GcmRegistration
+        fields = ('id', 'device_id', 'token', 'user')

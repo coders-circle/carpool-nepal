@@ -168,6 +168,45 @@ public class CarpoolHandler {
         return user;
     }
 
+    private void AddCarpool(JSONObject carpool) {
+        Carpool cp = new Carpool();
+
+        cp.remoteId = carpool.optLong("id");
+
+        List<Carpool> ocps = Carpool.find(Carpool.class, "remote_id=?", cp.remoteId + "");
+        if (ocps.size() > 0)
+            ocps.get(0).delete();
+
+        cp.type = carpool.optInt("carpool_type");
+        cp.source = carpool.optString("source");
+        cp.destination = carpool.optString("destination");
+        cp.description = carpool.optString("description");
+        cp.seats = carpool.optInt("seats");
+        cp.status = carpool.optInt("status");
+
+        cp.time = TimeToLong(carpool.optString("time"));
+        cp.date = DateToLong(carpool.optString("date"));
+        cp.poster = AddUser(carpool.optLong("poster"));
+        cp.save();
+    }
+
+    public void GetCarpool(long remote_id) {
+        NetworkHandler handler = new NetworkHandler(mUsername, mPassword);
+        handler.GetAsync("carpools/" + remote_id + "/", new Callback() {
+            @Override
+            public void onComplete(String response) {
+                try {
+                    JSONObject carpool = new JSONObject(response);
+                    AddCarpool(carpool);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                RefreshUsers();
+            }
+        });
+    }
+
     public void GetCarpools(String location) {
         String url = "carpools/";
 
@@ -185,25 +224,7 @@ public class CarpoolHandler {
                     for (int i = 0; i < carpools.length(); ++i) {
                         JSONObject carpool = carpools.optJSONObject(i);
                         if (carpool != null) {
-                            Carpool cp = new Carpool();
-
-                            cp.remoteId = carpool.optLong("id");
-
-                            List<Carpool> ocps = Carpool.find(Carpool.class, "remote_id=?", cp.remoteId+"");
-                            if (ocps.size() > 0)
-                                ocps.get(0).delete();
-
-                            cp.type = carpool.optInt("carpool_type");
-                            cp.source = carpool.optString("source");
-                            cp.destination = carpool.optString("destination");
-                            cp.description = carpool.optString("description");
-                            cp.seats = carpool.optInt("seats");
-                            cp.status = carpool.optInt("status");
-
-                            cp.time = TimeToLong(carpool.optString("time"));
-                            cp.date = DateToLong(carpool.optString("date"));
-                            cp.poster = AddUser(carpool.optLong("poster"));
-                            cp.save();
+                            AddCarpool(carpool);
                         }
                     }
                 } catch (JSONException e) {

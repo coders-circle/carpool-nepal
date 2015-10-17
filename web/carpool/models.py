@@ -69,3 +69,9 @@ class Reply(models.Model):
 
     def __str__(self):
         return self.message
+
+
+class GcmRegistration(models.Model):
+    user = models.ForeignKey(User)
+    device_id = models.TextField(unique=True)
+    token = models.TextField()
