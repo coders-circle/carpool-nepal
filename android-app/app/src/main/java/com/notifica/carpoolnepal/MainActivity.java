@@ -28,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
         mPager = (ViewPager)findViewById(R.id.pager_home);
         mPager.setAdapter(mAdapter);
 
+
+
         mActionBar = getSupportActionBar();
         mActionBar.setHomeButtonEnabled(false);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -45,6 +47,16 @@ public class MainActivity extends ActionBarActivity {
                 // probably ignore this event
             }
         };
+
+        mPager.setOnPageChangeListener(
+                new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        // When swiping between pages, select the
+                        // corresponding tab.
+                        mActionBar.setSelectedNavigationItem(position);
+                    }
+                });
 
         for (String tab_name : tabs) {
             mActionBar.addTab(mActionBar.newTab().setText(tab_name)
