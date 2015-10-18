@@ -1,6 +1,8 @@
 package com.notifica.carpoolnepal;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,29 +13,46 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ankit on 10/18/2015.
- */
 public class RequestsFragment extends Fragment {
-    private List<Carpool> testList;
+    private List<Carpool> testList =  new ArrayList<>(); // Initialize by empty list
+    private RecyclerView.Adapter adapter = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize dataset, this data would usually come from a local content provider or
+        // Initialize data set, this data would usually come from a local content provider or
         // remote server.
         initData();
     }
 
     private void initData(){
-        testList = new ArrayList<Carpool>();
-        Carpool cp = new Carpool();
-        cp.source = "Imadol";
-        cp.destination = "Pulchowk";
-        testList.add(cp);
-        testList.add(cp);
-        testList.add(cp);
-        testList.add(cp);
+        // First download all carpools from server
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String username = preferences.getString("username", "");
+        String password = preferences.getString("password", "");
+        CarpoolHandler handler = new CarpoolHandler(username, password);
+
+        // Pass in location instead of null to download carpools by location
+        handler.GetCarpools(null, new Callback() {
+            @Override
+            public void onComplete(String response) {
+
+                // Now get all carpools as list
+                List<Carpool> list = Carpool.find(Carpool.class, "type=1"); // 1 == request, 0 == offer
+                // To filter list by location, use carpool.source and carpool.destination
+
+                // We can't just create new testList since adapter already has a reference to the original testlist
+                // Instead replace all items in the testList by new list
+                testList.clear();
+                for (Carpool c: list)
+                    testList.add(c);
+
+                if (adapter != null) {
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
 
@@ -43,7 +62,6 @@ public class RequestsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_requests, container, false);
         RecyclerView recyclerView;
-        RecyclerView.Adapter adapter;
         RecyclerView.LayoutManager layoutManager;
 
         recyclerView = (RecyclerView)rootView.findViewById(R.id.carpool_requests_view);
