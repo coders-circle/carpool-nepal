@@ -6,7 +6,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.toggle.carpoolnepal"
+        applicationId "com.notifica.carpoolnepal"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
@@ -25,4 +25,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.github.satyan:sugar:1.3'
+    compile 'com.android.support:cardview-v7:+'
+    compile 'com.android.support:recyclerview-v7:+'
 }
