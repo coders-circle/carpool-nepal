@@ -2,6 +2,7 @@ package com.notifica.carpoolnepal;
 
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -49,6 +50,8 @@ public class NetworkHandler {
                 InputStream is = response.getEntity().getContent();
                 result = convertStreamToString(is);
             }
+
+            Log.d("JSON response", result);
         } catch (Exception e) {
             e.printStackTrace();
             result = ERR_CONNECTION;

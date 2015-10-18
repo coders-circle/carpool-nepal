@@ -1,6 +1,7 @@
 package com.notifica.carpoolnepal;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -207,7 +208,7 @@ public class CarpoolHandler {
         });
     }
 
-    public void GetCarpools(String location) {
+    public void GetCarpools(String location, final Callback callback) {
         String url = "carpools/";
 
         if (location != null)
@@ -232,6 +233,9 @@ public class CarpoolHandler {
                 }
 
                 RefreshUsers();
+
+                if (callback != null)
+                    callback.onComplete("Success");
             }
         });
     }
@@ -294,7 +298,8 @@ public class CarpoolHandler {
         while (i.hasNext()) {
             Long uid = i.next();
             NetworkHandler handler = new NetworkHandler(mUsername, mPassword);
-            handler.GetAsync("users/" + uid, new Callback() {
+            Long rem_uid = User.findById(User.class, uid).remoteId;
+            handler.GetAsync("users/" + rem_uid + "/", new Callback() {
                 @Override
                 public void onComplete(String response) {
                     try {

@@ -6,13 +6,16 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -42,6 +45,12 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean("loggedin", false)) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
@@ -121,8 +130,15 @@ public class LoginActivity extends Activity {
                     String error = "";
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.optString("user").equals(email))
+                        if (object.optString("user").equals(email)) {
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                            preferences.edit().putString("username", email)
+                                    .putString("password", password).putBoolean("loggedin", true).apply();
+
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            LoginActivity.this.startActivity(intent);
                             finish();
+                        }
                         else
                             error = object.optString("detail");
                     } catch (JSONException e) {
