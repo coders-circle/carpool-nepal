@@ -1,12 +1,13 @@
 package com.notifica.carpoolnepal;
 
 import android.content.res.Configuration;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,31 +18,26 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-    public SwipeRefreshLayoutFragment swipeRefreshLayout;
 
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String navMenuTitles[] = {"Home", "My Requests", "My Offers"};
-
-    private ArrayList<NavigationDrawerItem> navDrawerItems;
-    private NavigationDrawerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTitle = mDrawerTitle = getTitle();
+        mTitle = getTitle();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_main);
         mDrawerList = (ListView) findViewById(R.id.list_slider_menu);
 
-        navDrawerItems = new ArrayList<NavigationDrawerItem>();
+        ArrayList<NavigationDrawerItem> navDrawerItems = new ArrayList<>();
 
         // adding nav drawer items to array
         navDrawerItems.add(new NavigationDrawerItem("Home", android.R.drawable.ic_menu_today));
@@ -50,30 +46,25 @@ public class MainActivity extends ActionBarActivity {
 
 
         // setting the nav drawer list adapter
-        adapter = new NavigationDrawerAdapter(getApplicationContext(), navDrawerItems);
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getApplicationContext(), navDrawerItems);
         mDrawerList.setAdapter(adapter);
 
         // enabling action bar app icon and behaving it as toggle button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.hideOverflowMenu();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                android.R.drawable.ic_menu_add, //nav menu toggle icon
+                toolbar, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
                 R.string.app_name // nav drawer close - description for accessibility
-        ){
-            public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
-                invalidateOptionsMenu();
-            }
+        );
 
-            public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
-                invalidateOptionsMenu();
-            }
-        };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
@@ -98,12 +89,11 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
 
-
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {
             return true;
         }
+        // else if
 
         return super.onOptionsItemSelected(item);
     }
@@ -119,7 +109,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(mTitle);
     }
 
     /**
@@ -151,15 +142,12 @@ public class MainActivity extends ActionBarActivity {
         switch (position) {
             case 0:
                 fragment = mHomeFragment;
-                getSupportActionBar().setNavigationMode(getSupportActionBar().NAVIGATION_MODE_TABS);
                 break;
             case 1:
                 fragment = mMyRequestFragment;
-                getSupportActionBar().setNavigationMode(getSupportActionBar().NAVIGATION_MODE_STANDARD);
                 break;
             case 2:
                 fragment = mMyOffersFragment;
-                getSupportActionBar().setNavigationMode(getSupportActionBar().NAVIGATION_MODE_STANDARD);
                 break;
             default:
                 break;
@@ -168,7 +156,7 @@ public class MainActivity extends ActionBarActivity {
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_content, fragment).commit();
+                    .replace(R.id.frame_content, fragment).commitAllowingStateLoss();
 
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
