@@ -11,12 +11,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/primary"
             android:popupTheme="@style/Theme.AppCompat"
             android:fitsSystemWindows="true"/>
 
@@ -36,7 +38,7 @@
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
         android:dividerHeight="1dp"
-        android:background="#FFFFFFFF"
+        android:background="@color/bright_foreground_material_dark"
         android:listSelector="@drawable/list_selector"/>
 
 </android.support.v4.widget.DrawerLayout >

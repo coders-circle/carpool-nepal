@@ -344,6 +344,11 @@ public class CarpoolHandler {
         return 0;
     }
 
+    public static String LongDateToDayOfWeek(long date){
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
+        return formatter.format(new Date(date));
+    }
+
     public static String LongToDate(long date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return formatter.format(new Date(date));
@@ -356,6 +361,11 @@ public class CarpoolHandler {
     public static String LongToTime(long time) {
         Time t = new Time(time);
         return t.toString();
+    }
+
+    public static String LongToTime12(long time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
+        return formatter.format(new Time(time));
     }
 
     public static long DateTimeToLong(String dateTimeString) {
