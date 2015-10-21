@@ -71,7 +71,6 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
         layoutManager = new LinearLayoutManager(rootView.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        // specify an adapter (see also next example)
         mAdapter = new CarpoolAdapter(mCarpoolList, this);
         recyclerView.setAdapter(mAdapter);
 

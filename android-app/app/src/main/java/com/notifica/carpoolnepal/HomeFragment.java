@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void showDetails(Carpool carpool) {
-        CarpoolDetailFragment displayFrag = (CarpoolDetailFragment) getFragmentManager().findFragmentById(R.id.fragment_details);
+        CarpoolDetailFragment displayFrag = (CarpoolDetailFragment) getChildFragmentManager().findFragmentById(R.id.fragment_details);
         if (displayFrag == null) {
             CarpoolDetailActivity.carpool = carpool;
             Intent intent = new Intent(getActivity(), CarpoolDetailActivity.class);
