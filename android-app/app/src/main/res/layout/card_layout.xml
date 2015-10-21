@@ -43,37 +43,16 @@
                 android:gravity="center_vertical"/>
 
             <TextView
-                android:id="@+id/carpool_source"
+                android:id="@+id/carpool_source_destination"
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="Source"
+                android:text="Source to Destination"
                 android:gravity="center_vertical"
                 android:layout_below="@id/carpool_time"
                 android:layout_toRightOf="@id/carpool_location_icon"/>
 
-            <TextView
-                android:id="@+id/carpool_source_destination_divider"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="to"
-                android:gravity="center_vertical"
-                android:layout_below="@id/carpool_time"
-                android:layout_toRightOf="@id/carpool_source"/>
-
-            <TextView
-                android:id="@+id/carpool_destination"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="Destination"
-                android:layout_below="@id/carpool_time"
-                android:layout_toRightOf="@id/carpool_source_destination_divider"
-                android:gravity="center_vertical"/>
             <TextView
                 android:id="@+id/carpool_description"
                 android:layout_width="wrap_content"

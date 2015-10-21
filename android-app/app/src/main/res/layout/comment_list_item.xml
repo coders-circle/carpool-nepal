@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/comment_user_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/ic_launcher"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/comment_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mr. Frozen Helium"
+            android:layout_toRightOf="@id/comment_user_image"
+            android:gravity="center_vertical"
+            android:textColor="@color/accent"
+            android:paddingRight="40dp"/>
+
+        <TextView android:id="@+id/comment_user_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Hello World!"
+            android:layout_toRightOf="@id/comment_user_image"
+            android:layout_below="@id/comment_user_name"
+            />
+    </RelativeLayout>
+
+
+</LinearLayout>

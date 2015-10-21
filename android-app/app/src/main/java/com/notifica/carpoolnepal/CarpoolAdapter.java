@@ -36,23 +36,20 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
         carpoolViewHolder.vTime.setText(CarpoolHandler.LongToTime12(cp.time)
                 + ", "
                 + CarpoolHandler.LongDateToDayOfWeek(cp.date));
-        carpoolViewHolder.vSource.setText(cp.source);
-        carpoolViewHolder.vDestination.setText(cp.destination);
+        carpoolViewHolder.vSourceDestination.setText(cp.source + " to " + cp.destination);
         carpoolViewHolder.vDescription.setText(cp.description);
         carpoolViewHolder.vOriginalPoster.setText(cp.poster.firstName + " " + cp.poster.lastName);
 
     }
     public static class CarpoolViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected TextView vTime;
-        protected TextView vSource;
-        protected TextView vDestination;
+        protected TextView vSourceDestination;
         protected TextView vDescription;
         protected TextView vOriginalPoster;
         public CarpoolViewHolder(View v) {
             super(v);
             vTime = (TextView)v.findViewById(R.id.carpool_time);
-            vSource = (TextView)v.findViewById(R.id.carpool_source);
-            vDestination = (TextView)v.findViewById(R.id.carpool_destination);
+            vSourceDestination = (TextView)v.findViewById(R.id.carpool_source_destination);
             vDescription = (TextView)v.findViewById(R.id.carpool_description);
             vOriginalPoster = (TextView)v.findViewById(R.id.carpool_original_poster);
             CardView cardView = (CardView)v.findViewById(R.id.card_view);
