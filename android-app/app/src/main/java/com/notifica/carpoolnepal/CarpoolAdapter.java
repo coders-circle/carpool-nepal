@@ -10,26 +10,29 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by Ankit on 10/18/2015.
- */
-public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolViewHolder>{
+public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolViewHolder> implements Listeners.CardSelectionListener {
     List<Carpool> mCarpoolList;
-    public CarpoolAdapter(List<Carpool> carpools){
+    Listeners.CarpoolSelectionListener mListener;
+
+    public CarpoolAdapter(List<Carpool> carpools, Listeners.CarpoolSelectionListener listener){
         mCarpoolList = carpools;
+        mListener = listener;
     }
+
     @Override
     public int getItemCount() {
         return mCarpoolList.size();
     }
+
     @Override
     public CarpoolViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.card_layout, viewGroup, false);
 
-        return new CarpoolViewHolder(itemView);
+        return new CarpoolViewHolder(itemView, this);
     }
+
     @Override
     public void onBindViewHolder(CarpoolViewHolder carpoolViewHolder, int i) {
         Carpool cp = mCarpoolList.get(i);
@@ -41,12 +44,20 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
         carpoolViewHolder.vOriginalPoster.setText(cp.poster.firstName + " " + cp.poster.lastName);
 
     }
+
+    @Override
+    public void onSelect(int position) {
+        mListener.onSelect(mCarpoolList.get(position));
+    }
+
     public static class CarpoolViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected TextView vTime;
         protected TextView vSourceDestination;
         protected TextView vDescription;
         protected TextView vOriginalPoster;
-        public CarpoolViewHolder(View v) {
+        private Listeners.CardSelectionListener mListener;
+
+        public CarpoolViewHolder(View v, Listeners.CardSelectionListener listener) {
             super(v);
             vTime = (TextView)v.findViewById(R.id.carpool_time);
             vSourceDestination = (TextView)v.findViewById(R.id.carpool_source_destination);
@@ -55,11 +66,14 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
             CardView cardView = (CardView)v.findViewById(R.id.card_view);
             cardView.setOnClickListener(this);
 
+            mListener = listener;
         }
+
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             Log.v("yay item was clicked - ", String.valueOf(position));
+            mListener.onSelect(position);
         }
     }
 }
