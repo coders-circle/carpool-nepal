@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 public class NetworkHandler {
-    private final String BASE_URL = "http://192.168.1.2:8000/carpool/";
+    private final String BASE_URL = "http://192.168.0.40:8000/carpool/";
     public final String ERR_CONNECTION = "{ \"detail\": \"Error on connection.\" }";
 
     private final String username, password;
