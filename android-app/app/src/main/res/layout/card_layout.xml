@@ -73,23 +73,13 @@
                 android:layout_height="1dp"
                 android:background="@color/divider"
                 android:layout_below="@id/carpool_description"/>
-            <ImageView
-                android:id="@+id/carpool_user_image"
-                android:layout_marginLeft="20dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_below="@id/carpool_divider"
-                android:src="@drawable/ic_launcher"
-                android:gravity="center_vertical"/>
             <TextView
                 android:id="@+id/carpool_original_poster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
                 android:text="Mr. Absolute Zero"
                 android:layout_below="@id/carpool_divider"
-                android:layout_toRightOf="@id/carpool_user_image"
                 android:gravity="center_vertical" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>

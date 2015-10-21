@@ -9,7 +9,7 @@
         android:id="@+id/card_view_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp"
+        card_view:cardCornerRadius="0dp"
         android:layout_margin="5dp">
         <RelativeLayout
             android:layout_marginTop="20dp"
@@ -127,22 +127,17 @@
                 android:layout_toRightOf="@id/cd_user_image"
                 android:gravity="center_vertical" />
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+            <View
+                android:id="@+id/cd_divider_user_info"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+                android:layout_below="@id/cd_user_image"/>
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/card_view_comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp"
-        android:layout_margin="5dp">
-        <RelativeLayout
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/text_add_comment"
@@ -150,6 +145,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/cd_divider_user_info"
                 android:textColor="@color/primaryDark"/>
             <EditText
                 android:id="@+id/edit_add_comment"
@@ -161,6 +157,7 @@
                 android:layout_below="@id/text_add_comment"
                 android:gravity="top"/>
             <Button
+                android:id="@+id/button_post_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -168,28 +165,24 @@
                 android:text="Post"
                 android:layout_below="@id/edit_add_comment"/>
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+            <View
+                android:id="@+id/cd_divider_add_comment"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+                android:layout_below="@id/button_post_comment"/>
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/card_view_add_comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp"
-        android:layout_margin="5dp">
-        <RelativeLayout
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
             <TextView
                 android:id="@+id/text_comment"
                 android:text="Comments"
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/cd_divider_add_comment"
                 android:textColor="@color/primaryDark"/>
             <FrameLayout
                 android:layout_width="match_parent"
@@ -197,7 +190,9 @@
                 android:id="@+id/frame_comment">
             </FrameLayout>
         </RelativeLayout>
-
     </android.support.v7.widget.CardView>
+
+
+
 
 </LinearLayout>
