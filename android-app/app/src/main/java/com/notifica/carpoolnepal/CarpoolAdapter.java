@@ -1,6 +1,8 @@
 package com.notifica.carpoolnepal;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,7 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
         carpoolViewHolder.vOriginalPoster.setText(cp.poster.firstName + " " + cp.poster.lastName);
 
     }
-    public static class CarpoolViewHolder extends RecyclerView.ViewHolder{
+    public static class CarpoolViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected TextView vTime;
         protected TextView vSource;
         protected TextView vDestination;
@@ -53,6 +55,14 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
             vDestination = (TextView)v.findViewById(R.id.carpool_destination);
             vDescription = (TextView)v.findViewById(R.id.carpool_description);
             vOriginalPoster = (TextView)v.findViewById(R.id.carpool_original_poster);
+            CardView cardView = (CardView)v.findViewById(R.id.card_view);
+            cardView.setOnClickListener(this);
+
+        }
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Log.v("yay item was clicked - ", String.valueOf(position));
         }
     }
 }
