@@ -1,6 +1,8 @@
 package com.notifica.carpoolnepal;
 
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -146,10 +148,11 @@ public class CarpoolHandler {
         cp.time = TimeToLong(carpool.optString("time"));
         cp.date = DateToLong(carpool.optString("date"));
         cp.poster = addUser(carpool.optLong("poster"));
+        cp.postedOn = DateTimeToLong(carpool.optString("posted_on"));
         cp.save();
     }
 
-    public void getCarpool(long remote_id) {
+    private void getCarpool(long remote_id) {
         NetworkHandler handler = new NetworkHandler(mUsername, mPassword);
         handler.GetAsync("carpools/" + remote_id + "/", new Callback() {
             @Override
@@ -160,8 +163,6 @@ public class CarpoolHandler {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                refreshUsers();
             }
         });
     }
@@ -190,7 +191,7 @@ public class CarpoolHandler {
                     e.printStackTrace();
                 }
 
-                refreshUsers();
+                refreshUsers(callback);
 
                 if (callback != null)
                     callback.onComplete("Success");
@@ -232,7 +233,7 @@ public class CarpoolHandler {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                refreshUsers();
+                refreshUsers(callback);
 
 
                 if (callback != null)
@@ -241,15 +242,16 @@ public class CarpoolHandler {
         });
     }
 
-    private void refreshUsers() {
-        Iterator<Long> i = userIds.iterator();
-        while (i.hasNext()) {
-            Long uid = i.next();
-            NetworkHandler handler = new NetworkHandler(mUsername, mPassword);
-            Long rem_uid = User.findById(User.class, uid).remoteId;
-            handler.GetAsync("users/" + rem_uid + "/", new Callback() {
-                @Override
-                public void onComplete(String response) {
+    public void refreshUsers(final Callback callback) {
+        class GetUsersAsyncTask extends AsyncTask<Void, Void, String> {
+            @Override
+            protected String doInBackground(Void... params) {
+                Iterator<Long> i = userIds.iterator();
+                while (i.hasNext()) {
+                    Long uid = i.next();
+                    NetworkHandler handler = new NetworkHandler(mUsername, mPassword);
+                    Long rem_uid = User.findById(User.class, uid).remoteId;
+                    String response = handler.Get("users/" + rem_uid + "/");
                     try {
                         JSONObject userObj = new JSONObject(response);
                         long userId = userObj.optLong("id");
@@ -274,10 +276,18 @@ public class CarpoolHandler {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    i.remove();
                 }
-            });
-            i.remove();
+                return "Success";
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                if (callback != null)
+                    callback.onComplete(result);
+            }
         }
+        new GetUsersAsyncTask().execute();
     }
 
 
@@ -317,9 +327,10 @@ public class CarpoolHandler {
     }
 
     public static long DateTimeToLong(String dateTimeString) {
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.US);
         try {
             Date date = df1.parse(dateTimeString);
+            Log.d("date", date.toString());
             return date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();

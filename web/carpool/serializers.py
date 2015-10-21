@@ -38,7 +38,7 @@ class CarpoolSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Carpool
-        fields = ('id', 'carpool_type', 'status', 'source', 'destination', 'description', 'seats', 'poster', 'time', 'date') #, 'comments')
+        fields = ('id', 'carpool_type', 'status', 'source', 'destination', 'description', 'seats', 'poster', 'time', 'date', 'posted_on') #, 'comments')
 
 
 class CommentSerializer(serializers.ModelSerializer):

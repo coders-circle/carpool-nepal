@@ -37,6 +37,7 @@ class Carpool(models.Model):
     poster = models.ForeignKey(User)
     time = models.TimeField()
     date = models.DateField()
+    posted_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         string = self.source + " - " + self.destination
