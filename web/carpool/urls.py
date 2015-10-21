@@ -7,8 +7,7 @@ from . import views
 router = DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'carpools', views.CarpoolViewSet, base_name='carpool')
-router.register(r'responses', views.ResponseViewSet, base_name='response')
-router.register(r'replies', views.ReplyViewSet)
+router.register(r'comments', views.CommentViewSet, base_name='comment')
 router.register(r'gcm-registrations', views.GcmRegistrationViewSet, base_name='gcm-registration')
 
 urlpatterns = [

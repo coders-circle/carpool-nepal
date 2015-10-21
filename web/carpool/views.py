@@ -47,8 +47,8 @@ class CarpoolViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class ResponseViewSet(viewsets.ModelViewSet):
-    serializer_class = ResponseSerializer
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
     def perform_create(self, serializer):
@@ -58,21 +58,11 @@ class ResponseViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         carpool_id = self.request.GET.get("carpool")
         if carpool_id:
-            queryset = Response.objects.filter(carpool__pk=carpool_id)
+            queryset = Comment.objects.filter(carpool__pk=carpool_id)
         else:
-            queryset = Response.objects.all()
+            queryset = Comment.objects.all()
 
         return queryset
-
-
-class ReplyViewSet(viewsets.ModelViewSet):
-    queryset = Reply.objects.all()
-    serializer_class = ReplySerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
-    
-    def perform_create(self, serializer):
-        user = User.objects.filter(user=self.request.user).get()
-        serializer.save(poster=user)
 
 
 class GcmRegistrationViewSet(viewsets.ModelViewSet):
