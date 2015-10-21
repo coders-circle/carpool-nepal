@@ -345,7 +345,7 @@ public class CarpoolHandler {
     }
 
     public static String LongDateToDayOfWeek(long date){
-        SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE", Locale.US);
         return formatter.format(new Date(date));
     }
 
@@ -364,7 +364,7 @@ public class CarpoolHandler {
     }
 
     public static String LongToTime12(long time) {
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a", Locale.US);
         return formatter.format(new Time(time));
     }
 
