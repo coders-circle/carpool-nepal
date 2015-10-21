@@ -1,6 +1,7 @@
 package com.notifica.carpoolnepal;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
@@ -41,6 +42,17 @@ public class HomeFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+    }
+
+    public void showDetails(Carpool carpool) {
+        CarpoolDetailFragment displayFrag = (CarpoolDetailFragment) getFragmentManager().findFragmentById(R.id.fragment_details);
+        if (displayFrag == null) {
+            CarpoolDetailActivity.carpool = carpool;
+            Intent intent = new Intent(getActivity(), CarpoolDetailActivity.class);
+            startActivity(intent);
+        } else {
+            displayFrag.setCarpool(carpool);
+        }
     }
 
     public static class TabsPagerAdapter extends FragmentStatePagerAdapter {

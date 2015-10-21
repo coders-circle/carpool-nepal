@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarpoolsFragment extends Fragment {
+public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelectionListener {
     private List<Carpool> mCarpoolList =  new ArrayList<>(); // Initialize by empty list
     private RecyclerView.Adapter mAdapter = null;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -72,7 +72,7 @@ public class CarpoolsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new CarpoolAdapter(mCarpoolList);
+        mAdapter = new CarpoolAdapter(mCarpoolList, this);
         recyclerView.setAdapter(mAdapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
@@ -90,5 +90,11 @@ public class CarpoolsFragment extends Fragment {
         getData();
 
         return rootView;
+    }
+
+    @Override
+    public void onSelect(Carpool carpool) {
+        HomeFragment home = (HomeFragment)getParentFragment();
+        home.showDetails(carpool);
     }
 }
