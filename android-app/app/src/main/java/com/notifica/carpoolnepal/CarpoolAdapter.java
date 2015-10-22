@@ -36,12 +36,18 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
     @Override
     public void onBindViewHolder(CarpoolViewHolder carpoolViewHolder, int i) {
         Carpool cp = mCarpoolList.get(i);
-        carpoolViewHolder.vTime.setText(CarpoolHandler.LongToTime12(cp.time)
+
+        String time = CarpoolHandler.LongToTime12(cp.time)
                 + ", "
-                + CarpoolHandler.LongDateToDayOfWeek(cp.date));
-        carpoolViewHolder.vSourceDestination.setText(cp.source + " to " + cp.destination);
+                + CarpoolHandler.LongDateToDayOfWeek(cp.date);
+        carpoolViewHolder.vTime.setText(time);
+
+        String sd = cp.source + " to " + cp.destination;
+        carpoolViewHolder.vSourceDestination.setText(sd);
         carpoolViewHolder.vDescription.setText(cp.description);
-        carpoolViewHolder.vOriginalPoster.setText(cp.poster.firstName + " " + cp.poster.lastName);
+
+        String poster = cp.poster.firstName + " " + cp.poster.lastName;
+        carpoolViewHolder.vOriginalPoster.setText(poster);
 
     }
 

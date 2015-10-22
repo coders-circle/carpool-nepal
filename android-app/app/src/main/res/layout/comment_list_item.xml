@@ -25,13 +25,22 @@
             android:textColor="@color/accent"
             android:paddingRight="40dp"/>
 
+        <TextView android:id="@+id/comment_posted_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="2014-2-3"
+            android:layout_toRightOf="@id/comment_user_image"
+            android:layout_below="@id/comment_user_name"
+            />
+
         <TextView android:id="@+id/comment_user_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Hello World!"
             android:layout_toRightOf="@id/comment_user_image"
-            android:layout_below="@id/comment_user_name"
+            android:layout_below="@id/comment_posted_at"
             />
     </RelativeLayout>
 

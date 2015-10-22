@@ -9,7 +9,8 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="0dp"
+        android:layout_weight="0.4"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <android.support.design.widget.TabLayout
@@ -33,7 +34,8 @@
     <fragment
         class="com.notifica.carpoolnepal.CarpoolDetailFragment"
         android:id="@+id/fragment_details"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_carpool_detail" />
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelectionListener {
     private List<Carpool> mCarpoolList =  new ArrayList<>(); // Initialize by empty list
-    private RecyclerView.Adapter mAdapter = null;
+    private RecyclerView.Adapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private int mType; // requests or offers
@@ -49,7 +49,7 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
         CarpoolHandler handler = new CarpoolHandler(username, password);
 
         // Pass in location instead of null to download carpools by location
-        handler.GetCarpools(null, new Callback() {
+        handler.getCarpools(null, new Callback() {
             @Override
             public void onComplete(String response) {
                 refreshData();
@@ -71,7 +71,6 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
         layoutManager = new LinearLayoutManager(rootView.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        // specify an adapter (see also next example)
         mAdapter = new CarpoolAdapter(mCarpoolList, this);
         recyclerView.setAdapter(mAdapter);
 
