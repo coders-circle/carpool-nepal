@@ -3,9 +3,19 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primaryDark</item>
-        <item name="android:textColorPrimary">@color/primaryText</item>
-        <item name="android:textColorSecondary">@color/secondaryText</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="AppTheme">
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:textColorSecondary">#dddddd</item>
+    </style>
+
+    <style name="TabLayoutTheme" parent="AppTheme">
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:textColorSecondary">#dddddd</item>
     </style>
 
 </resources>

@@ -2,18 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <RelativeLayout
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:focusable="true"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/comment_user_image"
+            android:src="@drawable/ic_user"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
+            android:tint="@color/icons"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:src="@drawable/ic_launcher"
-            android:layout_centerVertical="true" />
+            />
 
         <TextView
             android:id="@+id/comment_user_name"
@@ -43,6 +51,5 @@
             android:layout_below="@id/comment_posted_at"
             />
     </RelativeLayout>
-
 
 </LinearLayout>

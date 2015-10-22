@@ -16,14 +16,15 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="@drawable/card_foreground"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
+
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp">
 
         <RelativeLayout
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -32,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="2:00 PM, Saturday"
+                android:textColor="@color/accent"
                 android:paddingLeft="20dp"
                 android:textSize="26sp"
                 android:gravity="center_vertical"/>
@@ -42,6 +44,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@android:drawable/ic_menu_mylocation"
+                android:tint="@color/icons"
                 android:layout_below="@id/carpool_time"
                 android:gravity="center_vertical"/>
 
@@ -62,27 +65,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="the description of the ride goes here"
                 android:layout_below="@id/carpool_location_icon"
                 android:gravity="center_vertical"/>
-            <View
-                android:id="@+id/carpool_divider"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/divider"
-                android:layout_below="@id/carpool_description"/>
+
             <TextView
                 android:id="@+id/carpool_original_poster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
                 android:text="Mr. Absolute Zero"
-                android:layout_below="@id/carpool_divider"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/carpool_description"
                 android:gravity="center_vertical" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
