@@ -18,4 +18,8 @@ public class DatabaseHelper {
         for (Carpool carpool: carpools)
             deleteCarpool(carpool);
     }
+
+    public static User getUser(String username) {
+        return User.find(User.class, "user_name=?", username).get(0);
+    }
 }

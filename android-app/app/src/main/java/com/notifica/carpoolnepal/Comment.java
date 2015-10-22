@@ -8,5 +8,5 @@ public class Comment extends SugarRecord<Comment> {
     public String message;
     public long postedOn;
 
-    public long remoteId;
+    public long remoteId = -1;
 }

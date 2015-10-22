@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:paddingRight="20dp">
+
+    <LinearLayout
+        android:id="@+id/layout_time_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/cd_time"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10:00 AM"
+            android:textSize="25sp"
+            />
+        <TextView
+            android:id="@+id/cd_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sunday, February-12"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/cd_location_icon"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:tint="@color/icons"
+        android:src="@android:drawable/ic_menu_mylocation"
+        android:layout_below="@id/layout_time_date"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/cd_source_destination"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Source to Destination"
+        android:gravity="center_vertical"
+        android:layout_below="@id/layout_time_date"
+        android:layout_toRightOf="@id/cd_location_icon"/>
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/layout_time_date"
+        android:layout_toRightOf="@id/cd_source_destination"
+        android:src="@android:drawable/ic_dialog_map"
+        android:tint="@color/icons"
+        android:gravity="center_vertical"/>
+
+    <View
+        android:id="@+id/cd_divider_source"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_below="@id/cd_location_icon"/>
+
+    <TextView
+        android:id="@+id/cd_description"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Description of the carpool"
+        android:gravity="center_vertical"
+        android:layout_below="@id/cd_divider_source" />
+
+    <View
+        android:id="@+id/cd_divider_description"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_below="@id/cd_description"/>
+
+    <ImageView
+        android:id="@+id/cd_user_image"
+        android:layout_marginLeft="20dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/cd_divider_description"
+        android:tint="@color/icons"
+        android:src="@drawable/ic_user"
+        android:gravity="top"/>
+    <TextView
+        android:id="@+id/cd_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="Mr. Absolute Zero"
+        android:layout_below="@id/cd_divider_description"
+        android:layout_toRightOf="@id/cd_user_image"
+        android:gravity="center_vertical" />
+    <TextView
+        android:id="@+id/cd_contact_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="+977984191939"
+        android:layout_below="@id/cd_user_name"
+        android:layout_toRightOf="@id/cd_user_image"
+        android:gravity="center_vertical" />
+
+    <View
+        android:id="@+id/cd_divider_user_info"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_below="@id/cd_user_image"/>
+
+
+    <TextView
+        android:id="@+id/text_add_comment"
+        android:text="Add comment"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cd_divider_user_info"
+        android:textColor="@color/accent"/>
+    <EditText
+        android:id="@+id/edit_add_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="Enter comment here ..."
+        android:inputType="textMultiLine"
+        android:layout_below="@id/text_add_comment"
+        android:gravity="top"/>
+    <Button
+        android:id="@+id/button_post_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/primary_dark"
+        android:textColor="@color/bright_foreground_material_dark"
+        android:text="Post"
+        android:layout_below="@id/edit_add_comment"/>
+
+    <View
+        android:id="@+id/cd_divider_add_comment"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_below="@id/button_post_comment"/>
+
+</RelativeLayout>

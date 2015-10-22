@@ -56,8 +56,7 @@ public class CarpoolHandler {
                     if (responseObj.has("detail"))
                         result = responseObj.getString("detail");
                     else {
-                        carpool.remoteId = responseObj.getLong("id");
-                        carpool.save();
+                        addCarpool(responseObj);
                         result = "Success";
                     }
                 } catch (JSONException e) {
@@ -66,6 +65,8 @@ public class CarpoolHandler {
                 }
                 if (callback != null)
                     callback.onComplete(result);
+
+                refreshUsers(callback);
             }
         };
 
@@ -78,10 +79,10 @@ public class CarpoolHandler {
     public void postComment(final Comment comment, final Callback callback) {
         NetworkHandler handler = new NetworkHandler(mUsername, mPassword);
 
-        JSONObject responseObj = new JSONObject();
+        JSONObject postJson = new JSONObject();
         try {
-            responseObj.put("carpool", comment.carpool.remoteId);
-            responseObj.put("message", comment.message);
+            postJson.put("carpool", comment.carpool.remoteId);
+            postJson.put("message", comment.message);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -96,8 +97,11 @@ public class CarpoolHandler {
                     if (responseObj.has("detail"))
                         result = responseObj.getString("detail");
                     else {
-                        comment.remoteId = responseObj.getLong("id");
-                        comment.save();
+//                        comment.remoteId = responseObj.getLong("id");
+//                        comment.postedOn = DateTimeToLong(responseObj.getString("posted_on"));
+//                        comment.poster = addUser(responseObj.getLong("poster"));
+//                        comment.save();
+                        addComment(comment.carpool, responseObj);
                         result = "Success";
                     }
                 } catch (JSONException e) {
@@ -106,13 +110,15 @@ public class CarpoolHandler {
                 }
                 if (callback != null)
                     callback.onComplete(result);
+
+                refreshUsers(callback);
             }
         };
 
         if (comment.remoteId < 0)
-            handler.PostAsync("comments/", responseObj, cb);
+            handler.PostAsync("comments/", postJson, cb);
         else
-            handler.PutAsync("comments/" + comment.remoteId + "/", responseObj, cb);
+            handler.PutAsync("comments/" + comment.remoteId + "/", postJson, cb);
     }
 
     private User addUser(long remote_id) {
@@ -199,6 +205,16 @@ public class CarpoolHandler {
         });
     }
 
+    public void addComment(Carpool carpool, JSONObject jsonObject) {
+        Comment comment = new Comment();
+        comment.remoteId = jsonObject.optLong("id");
+        comment.carpool = carpool;
+        comment.postedOn = DateTimeToLong(jsonObject.optString("posted_on"));
+        comment.poster = addUser(jsonObject.optLong("poster"));
+        comment.message = jsonObject.optString("message");
+        comment.save();
+    }
+
     public void getComments(final Carpool carpool, final Callback callback) {
         String url = "comments/";
 
@@ -210,7 +226,7 @@ public class CarpoolHandler {
             @Override
             public void onComplete(String sResponse) {
                 try {
-                    JSONArray responses = new JSONArray(sResponse);
+                    JSONArray comments = new JSONArray(sResponse);
                     DatabaseHelper.deleteComments(carpool);
 
                     if (carpool == null)
@@ -218,16 +234,10 @@ public class CarpoolHandler {
                     else
                         Comment.deleteAll(Comment.class, "carpool=?", carpool.remoteId +"");
 
-                    for (int i=0; i<responses.length(); ++i) {
-                        JSONObject responseObj = responses.optJSONObject(i);
+                    for (int i=0; i<comments.length(); ++i) {
+                        JSONObject responseObj = comments.optJSONObject(i);
                         if (responseObj != null) {
-                            Comment comment = new Comment();
-                            comment.remoteId = responseObj.optLong("id");
-                            comment.carpool = carpool;
-                            comment.postedOn = DateTimeToLong(responseObj.optString("posted_on"));
-                            comment.poster = addUser(responseObj.optLong("poster"));
-                            comment.message = responseObj.optString("message");
-                            comment.save();
+                            addComment(carpool, responseObj);
                         }
                     }
                 } catch (JSONException e) {
@@ -307,6 +317,11 @@ public class CarpoolHandler {
         return formatter.format(new Date(date));
     }
 
+    public static String LongToDayMonthDate(long date){
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMMM d", Locale.US);
+        return formatter.format(new Date(date));
+    }
+
     public static String LongToDate(long date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return formatter.format(new Date(date));
@@ -327,7 +342,8 @@ public class CarpoolHandler {
     }
 
     public static long DateTimeToLong(String dateTimeString) {
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.US);
+        dateTimeString = dateTimeString.replace("Z", "+0000");
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ", Locale.US);
         try {
             Date date = df1.parse(dateTimeString);
             Log.d("date", date.toString());

@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 public class NetworkHandler {
-    private final String BASE_URL = "http://192.168.1.2:8000/carpool/";
+    private final String BASE_URL = "http://192.168.0.40:8000/carpool/";
     public final String ERR_CONNECTION = "{ \"detail\": \"Error on connection.\" }";
 
     private final String username, password;
@@ -39,7 +39,7 @@ public class NetworkHandler {
 
         String authorizationString = "Basic " + Base64.encodeToString(
                 (username + ":" + password).getBytes(),
-                Base64.DEFAULT);
+                Base64.NO_WRAP);
         request.setHeader("Authorization", authorizationString);
 
         HttpResponse response;
