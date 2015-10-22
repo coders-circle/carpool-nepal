@@ -17,20 +17,33 @@ import java.util.List;
 public class CarpoolDetailFragment extends Fragment {
 
     private List<Comment> mComments = new ArrayList<>();
-    private RecyclerView.Adapter mAdapter;
+    private CarpoolDetailAdapter mAdapter;
     private Carpool mCarpool;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_carpool_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_carpool_detail, container, false);
+
+        RecyclerView recyclerView;
+        RecyclerView.LayoutManager layoutManager;
+
+        recyclerView = (RecyclerView)rootView.findViewById(R.id.comments_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new CarpoolDetailAdapter(this, mComments);
+        recyclerView.setAdapter(mAdapter);
+
+        return rootView;
     }
 
-    private void refreshData() {
+    public void refreshData() {
 
         // Now get all carpools as list
-        List<Comment> list = Comment.find(Comment.class, "carpool=?", ""+mCarpool.getId());
+        List<Comment> list = Comment.find(Comment.class,"carpool=?",  new String[]{""+mCarpool.getId()}, null, "posted_on DESC", null);
 
         // We can't just create new list since adapter already has a reference to the original list
         // Instead replace all items in the mCarpoolList by new list
@@ -39,11 +52,12 @@ public class CarpoolDetailFragment extends Fragment {
             mComments.add(c);
 
         if (mAdapter != null) {
+            mAdapter.setCarpool(mCarpool);
             mAdapter.notifyDataSetChanged();
         }
     }
 
-    private void getData(){
+    public void getData(){
         // First download all carpools from server
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String username = preferences.getString("username", "");
@@ -61,24 +75,9 @@ public class CarpoolDetailFragment extends Fragment {
 
     public void setCarpool(Carpool carpool) {
         mCarpool = carpool;
-        // User carpool to set view details here
 
-        // E.g.:
-        // TextView tv = (TextView)getActivity().findViewById(R.id.my_text_view);
-        // tv.setText(carpool.poster.firstName);
-
-        RecyclerView recyclerView;
-        RecyclerView.LayoutManager layoutManager;
-
-        recyclerView = (RecyclerView)getActivity().findViewById(R.id.comments_view);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
-        mAdapter = new CommentAdapter(mComments);
-        recyclerView.setAdapter(mAdapter);
-
-        refreshData();
-        getData();
+        refreshData();  // To refresh comments with what already is in database
+                        // in case server connection is slow/not available.
+        getData();      // To get new comments from server and refresh again when done.
     }
 }
