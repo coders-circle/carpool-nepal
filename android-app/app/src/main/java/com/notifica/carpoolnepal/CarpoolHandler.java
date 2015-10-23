@@ -64,10 +64,11 @@ public class CarpoolHandler {
                     e.printStackTrace();
                     result = "Couldn't post carpool.";
                 }
-                if (callback != null)
-                    callback.onComplete(result);
 
-                refreshUsers(callback);
+                if (result.equals("Success"))
+                    refreshUsers(callback);
+                else if (callback != null)
+                    callback.onComplete(result);
             }
         };
 
@@ -109,10 +110,11 @@ public class CarpoolHandler {
                     e.printStackTrace();
                     result = "Couldn't post comment.";
                 }
-                if (callback != null)
-                    callback.onComplete(result);
 
-                refreshUsers(callback);
+                if (result.equals("Success"))
+                    refreshUsers(callback);
+                else if (callback != null)
+                    callback.onComplete(result);
             }
         };
 
@@ -233,9 +235,9 @@ public class CarpoolHandler {
                     if (carpool == null)
                         Comment.deleteAll(Comment.class);
                     else
-                        Comment.deleteAll(Comment.class, "carpool=?", carpool.remoteId +"");
+                        Comment.deleteAll(Comment.class, "carpool=?", carpool.remoteId + "");
 
-                    for (int i=0; i<comments.length(); ++i) {
+                    for (int i = 0; i < comments.length(); ++i) {
                         JSONObject responseObj = comments.optJSONObject(i);
                         if (responseObj != null) {
                             addComment(carpool, responseObj);
@@ -302,15 +304,22 @@ public class CarpoolHandler {
     }
 
 
-    public static long DateToLong(String dateString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        try {
-            Date date = formatter.parse(dateString);
-            return date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
+
+    public static Date getDate(String dateString, String[] formatStrings) {
+        for (String formatString : formatStrings)
+        {
+            try
+            {
+                return new SimpleDateFormat(formatString, Locale.US).parse(dateString);
+            }
+            catch (ParseException ignored) {}
         }
-        return 0;
+
+        return new Date();
+    }
+
+    public static long DateToLong(String dateString) {
+        return getDate(dateString, new String[]{"yyyy-MM-dd", "yyyy/MM/dd", "yyyy.MM.dd"}).getTime();
     }
 
     public static String LongDateToDayOfWeek(long date){
@@ -329,7 +338,7 @@ public class CarpoolHandler {
     }
 
     public static long TimeToLong(String timeString) {
-        return Time.valueOf(timeString).getTime();
+        return getDate(timeString, new String[]{"hh:mm", "hh:mm:ss"}).getTime();
     }
 
     public static String LongToTime(long time) {

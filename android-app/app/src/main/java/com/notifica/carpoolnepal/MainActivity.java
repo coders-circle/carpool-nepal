@@ -1,5 +1,6 @@
 package com.notifica.carpoolnepal;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -79,13 +80,20 @@ public class MainActivity extends AppCompatActivity {
         //mDrawerRecyclerView.setOnItemClickListener(new SlideMenuClickListener());
     }
 
+    public void newCarpool(int type) {
+        NewCarpoolActivity.carpoolType = type;
+        NewCarpoolActivity.homeFragment = mHomeFragment;
+        Intent intent = new Intent(this, NewCarpoolActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_main, menu);
-        //return true;
-        return false;
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+        //return false;
     }
 
     @Override
@@ -99,7 +107,14 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        // else if
+        else if (id == R.id.action_add_offer) {
+            newCarpool(0);
+            return true;
+        }
+        else if (id == R.id.action_add_request) {
+            newCarpool(1);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
