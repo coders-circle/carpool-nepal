@@ -21,6 +21,8 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
 
     private int mType; // requests or offers
 
+    private int mLastSelected = 0;
+
     private void refreshData() {
 
         // Now get all carpools as list
@@ -39,6 +41,9 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
 
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(false);
+
+        if (mCarpoolList.size() > 0 && ((HomeFragment)getParentFragment()).multipane)
+            onSelect(mLastSelected);
     }
 
     private void getData(){
@@ -92,8 +97,9 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
     }
 
     @Override
-    public void onSelect(Carpool carpool) {
+    public void onSelect(int position) {
         HomeFragment home = (HomeFragment)getParentFragment();
-        home.showDetails(carpool);
+        home.showDetails(mCarpoolList.get(position));
+        mLastSelected = position;
     }
 }

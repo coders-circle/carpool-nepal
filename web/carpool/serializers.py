@@ -30,10 +30,14 @@ class UserSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Comment
 #         fields = ('id', 'poster', 'message', 'posted_on')
+
+
+datetimeformat = "%Y-%m-%d-%H-%M-%S"
  
 
 class CarpoolSerializer(serializers.ModelSerializer):
     poster = serializers.PrimaryKeyRelatedField(read_only=True)
+    posted_on = serializers.DateTimeField(format=datetimeformat, input_formats=[datetimeformat, 'iso-8601'], read_only=True)
     # comments = CommentMiniSerializer(many=True)
 
     class Meta:
@@ -43,6 +47,7 @@ class CarpoolSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     poster = serializers.PrimaryKeyRelatedField(read_only=True)
+    posted_on = serializers.DateTimeField(format=datetimeformat, input_formats=[datetimeformat, 'iso-8601'], read_only=True)
 
     class Meta:
         model = Comment

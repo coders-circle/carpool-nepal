@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class CarpoolHandler {
     private final String mUsername;
@@ -342,8 +343,8 @@ public class CarpoolHandler {
     }
 
     public static long DateTimeToLong(String dateTimeString) {
-        dateTimeString = dateTimeString.replace("Z", "+0000");
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ", Locale.US);
+        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US);
+        df1.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             Date date = df1.parse(dateTimeString);
             Log.d("date", date.toString());

@@ -17,6 +17,7 @@ public class HomeFragment extends Fragment {
 
     static final int NUM_ITEMS = 2;
     private final static String[] tabs = { "Offers", "Requests"};
+    public boolean multipane = false;
 
     @Override
     public void onAttach(Activity activity) {
@@ -24,9 +25,9 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        CarpoolDetailFragment displayFrag = (CarpoolDetailFragment) getChildFragmentManager().findFragmentById(R.id.fragment_details);
+        multipane = !(displayFrag == null || displayFrag.getActivity() == null);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -46,7 +47,7 @@ public class HomeFragment extends Fragment {
 
     public void showDetails(Carpool carpool) {
         CarpoolDetailFragment displayFrag = (CarpoolDetailFragment) getChildFragmentManager().findFragmentById(R.id.fragment_details);
-        if (displayFrag == null) {
+        if (displayFrag == null || displayFrag.getActivity() == null) {
             CarpoolDetailActivity.carpool = carpool;
             Intent intent = new Intent(getActivity(), CarpoolDetailActivity.class);
             startActivity(intent);

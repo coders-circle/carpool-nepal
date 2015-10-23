@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolViewHolder> implements Listeners.CardSelectionListener {
+public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolViewHolder> {
     List<Carpool> mCarpoolList;
     Listeners.CarpoolSelectionListener mListener;
 
@@ -30,7 +30,7 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
                 from(viewGroup.getContext()).
                 inflate(R.layout.card_layout, viewGroup, false);
 
-        return new CarpoolViewHolder(itemView, this);
+        return new CarpoolViewHolder(itemView, mListener);
     }
 
     @Override
@@ -51,19 +51,14 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
 
     }
 
-    @Override
-    public void onSelect(int position) {
-        mListener.onSelect(mCarpoolList.get(position));
-    }
-
     public static class CarpoolViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected TextView vTime;
         protected TextView vSourceDestination;
         protected TextView vDescription;
         protected TextView vOriginalPoster;
-        private Listeners.CardSelectionListener mListener;
+        private Listeners.CarpoolSelectionListener mListener;
 
-        public CarpoolViewHolder(View v, Listeners.CardSelectionListener listener) {
+        public CarpoolViewHolder(View v, Listeners.CarpoolSelectionListener listener) {
             super(v);
             vTime = (TextView)v.findViewById(R.id.carpool_time);
             vSourceDestination = (TextView)v.findViewById(R.id.carpool_source_destination);
