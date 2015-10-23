@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.media.Image;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,7 +26,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     private static final int HEADER = 0;
     private static final int ROW = 1;
 
-    private int selectedItem = 1;
+    private int selectedItem = 0;
 
     public void setSelectedItem(int item) {
         if (item>=0)
@@ -76,7 +77,10 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                 viewHolder.vCounter.setVisibility(View.GONE);
             }
             if(selectedItem == i-1) {
-                //viewHolder.
+                viewHolder.vCard.setCardBackgroundColor(context.getResources().getColor(R.color.primary_light));
+            }
+            else{
+                viewHolder.vCard.setCardBackgroundColor(context.getResources().getColor(R.color.cardview_light_background));
             }
         }
 

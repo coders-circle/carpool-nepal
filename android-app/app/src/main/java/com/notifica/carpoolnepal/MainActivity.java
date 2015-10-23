@@ -12,8 +12,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -77,7 +79,39 @@ public class MainActivity extends AppCompatActivity {
             // on first time display view for first nav item
             displayView(0);
         }
-        //mDrawerRecyclerView.setOnItemClickListener(new SlideMenuClickListener());
+
+        final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+
+        });
+
+        mDrawerRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                    int position = recyclerView.getChildPosition(child) - 1;
+                    if (position >= 0)
+                        displayView(position);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+
+            }
+        });
     }
 
     public void newCarpool(int type) {
@@ -182,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
             // update selected item and title, then close the drawer
             //mDrawerRecyclerView.setItemChecked(position, true);
             mDrawerAdapter.setSelectedItem(position);
+            mDrawerAdapter.notifyDataSetChanged();
             setTitle(navMenuTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerRecyclerView);
         } else {
