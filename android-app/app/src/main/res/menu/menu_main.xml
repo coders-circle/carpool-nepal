@@ -2,10 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.notifica.carpoolnepal.MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+    <!--item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_add_offer" android:title="#offer"
         app:showAsAction="never" />
     <item android:id="@+id/action_add_request" android:title="#ask"
-        app:showAsAction="never" />
+        app:showAsAction="never" /-->
+
+    <item android:id="@+id/action_search"
+        android:title="Search"
+        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
 </menu>

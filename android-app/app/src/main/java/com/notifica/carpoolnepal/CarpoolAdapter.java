@@ -86,7 +86,7 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
             if (mFragment.getHome().multipane) {
                 container.setSelected(true);
                 lastSelected = position;
-                if (lastContainer != null)
+                if (lastContainer != null && lastContainer != container)
                     lastContainer.setSelected(false);
                 lastContainer = container;
             }

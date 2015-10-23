@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -111,13 +112,39 @@ public class HomeFragment extends Fragment {
 
 
     public void refreshData() {
-        if (mCurrentFragment != null)
-            mCurrentFragment.changeList();
+
+        if (getActivity() == null)
+            return;
 
         // List<Comment> list = Comment.find(Comment.class,"carpool=?",  new String[]{""+mCarpool.getId()}, null, "posted_on DESC", null);
 
-        List<Carpool> olist = Carpool.find(Carpool.class, "type=0", new String[]{}, null, "posted_on DESC", null); // 0 == offer
-        List<Carpool> rlist = Carpool.find(Carpool.class, "type=1", new String[]{}, null, "posted_on DESC", null); // 1 == request
+        String location = ((MainActivity)getActivity()).searchLocation.toLowerCase();
+
+        List<Carpool> olist;
+        List<Carpool> rlist;
+
+        olist = Carpool.find(Carpool.class, "type=0", new String[]{}, null, "posted_on DESC", null); // 0 == offer
+        rlist = Carpool.find(Carpool.class, "type=1", new String[]{}, null, "posted_on DESC", null); // 1 == request
+
+
+        if (!location.equals("")) {
+            // filter by location
+            Iterator<Carpool> i = olist.iterator();
+            while (i.hasNext()) {
+                Carpool c = i.next();
+                if (!(c.source.toLowerCase().contains(location)
+                        || c.destination.toLowerCase().contains(location)))
+                    i.remove();
+            }
+
+            i = rlist.iterator();
+            while (i.hasNext()) {
+                Carpool c = i.next();
+                if (!(c.source.toLowerCase().contains(location)
+                        || c.destination.toLowerCase().contains(location)))
+                i.remove();
+            }
+        }
 
         // We can't just create new list since adapter already has a reference to the original list
         // Instead replace all items in the mCarpoolList by new list
@@ -128,5 +155,9 @@ public class HomeFragment extends Fragment {
         mRequestsList.clear();
         for (Carpool c: rlist)
             mRequestsList.add(c);
+
+
+        if (mCurrentFragment != null)
+            mCurrentFragment.changeList();
     }
 }

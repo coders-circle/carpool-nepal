@@ -1,7 +1,9 @@
 package com.notifica.carpoolnepal;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +12,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -112,6 +114,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        onNewIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            search(query);
+        }
+    }
+
+    public String searchLocation = "";
+    public void search(String location) {
+        Log.d("Search string", location);
+        searchLocation = location;
+        if (mHomeFragment != null)
+            mHomeFragment.refreshData();
+        displayView(0);
     }
 
     public void newCarpool(int type) {
@@ -121,48 +142,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
-        //return false;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if (id == R.id.action_add_offer) {
-            newCarpool(0);
-            return true;
-        }
-        else if (id == R.id.action_add_request) {
-            newCarpool(1);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerRecyclerView);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public void setTitle(CharSequence title) {
+        if (title.equals(navMenuTitles[0]) && searchLocation != "")
+            title = "Search: " + searchLocation;
+
         mTitle = title;
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(mTitle);
@@ -187,9 +180,9 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private static HomeFragment mHomeFragment = new HomeFragment();
-    private static MyOffersFragment mMyOffersFragment = new MyOffersFragment();
-    private static MyRequestsFragment mMyRequestFragment = new MyRequestsFragment();
+    private HomeFragment mHomeFragment = new HomeFragment();
+    private MyOffersFragment mMyOffersFragment = new MyOffersFragment();
+    private MyRequestsFragment mMyRequestFragment = new MyRequestsFragment();
 
     private void displayView(int position) {
         // update the main content by replacing fragments
@@ -224,15 +217,4 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity", "Error in creating fragment");
         }
     }
-
-    private class SlideMenuClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            // display view for selected nav drawer item
-            displayView(position);
-        }
-    }
-
 }
