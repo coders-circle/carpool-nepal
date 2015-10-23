@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -21,8 +23,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-
-    private ListView mDrawerList;
+    private NavigationDrawerAdapter mDrawerAdapter;
+    private RecyclerView mDrawerRecyclerView;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mTitle;
     private String navMenuTitles[] = {"Home", "My Requests", "My Offers"};
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mTitle = getTitle();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_main);
-        mDrawerList = (ListView) findViewById(R.id.list_slider_menu);
+        mDrawerRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_slider);
 
         ArrayList<NavigationDrawerItem> navDrawerItems = new ArrayList<>();
 
@@ -46,8 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         // setting the nav drawer list adapter
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getApplicationContext(), navDrawerItems);
-        mDrawerList.setAdapter(adapter);
+        mDrawerAdapter = new NavigationDrawerAdapter(getApplicationContext(), navDrawerItems);
+        mDrawerRecyclerView.setAdapter(mDrawerAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mDrawerRecyclerView.setLayoutManager(layoutManager);
+        mDrawerRecyclerView.setHasFixedSize(true);
 
         // enabling action bar app icon and behaving it as toggle button
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -71,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             // on first time display view for first nav item
             displayView(0);
         }
-        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+        //mDrawerRecyclerView.setOnItemClickListener(new SlideMenuClickListener());
     }
 
 
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerRecyclerView);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -160,10 +165,10 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.frame_content, fragment).commitAllowingStateLoss();
 
             // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            mDrawerList.setSelection(position);
+            //mDrawerRecyclerView.setItemChecked(position, true);
+            mDrawerAdapter.setSelectedItem(position);
             setTitle(navMenuTitles[position]);
-            mDrawerLayout.closeDrawer(mDrawerList);
+            mDrawerLayout.closeDrawer(mDrawerRecyclerView);
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
