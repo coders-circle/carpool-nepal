@@ -2,10 +2,10 @@ package com.notifica.carpoolnepal;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -13,10 +13,12 @@ import java.util.List;
 public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolViewHolder> {
     List<Carpool> mCarpoolList;
     Listeners.CarpoolSelectionListener mListener;
+    CarpoolsFragment mFragment;
 
-    public CarpoolAdapter(List<Carpool> carpools, Listeners.CarpoolSelectionListener listener){
+    public CarpoolAdapter(List<Carpool> carpools, CarpoolsFragment fragment){
         mCarpoolList = carpools;
-        mListener = listener;
+        mListener = fragment;
+        mFragment = fragment;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
                 from(viewGroup.getContext()).
                 inflate(R.layout.card_layout, viewGroup, false);
 
-        return new CarpoolViewHolder(itemView, mListener);
+        return new CarpoolViewHolder(itemView);
     }
 
     @Override
@@ -49,31 +51,45 @@ public class CarpoolAdapter extends RecyclerView.Adapter<CarpoolAdapter.CarpoolV
         String poster = cp.poster.firstName + " " + cp.poster.lastName;
         carpoolViewHolder.vOriginalPoster.setText(poster);
 
+        if (mFragment.getHome().multipane) {
+            carpoolViewHolder.cardView.setSelected(lastSelected == i);
+            if (lastSelected == i)
+                lastContainer = carpoolViewHolder.container;
+        }
     }
 
-    public static class CarpoolViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private int lastSelected = 0;
+    private RelativeLayout lastContainer;
+    public class CarpoolViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected TextView vTime;
         protected TextView vSourceDestination;
         protected TextView vDescription;
         protected TextView vOriginalPoster;
-        private Listeners.CarpoolSelectionListener mListener;
+        protected CardView cardView;
+        protected RelativeLayout container;
 
-        public CarpoolViewHolder(View v, Listeners.CarpoolSelectionListener listener) {
+        public CarpoolViewHolder(View v) {
             super(v);
             vTime = (TextView)v.findViewById(R.id.carpool_time);
             vSourceDestination = (TextView)v.findViewById(R.id.carpool_source_destination);
             vDescription = (TextView)v.findViewById(R.id.carpool_description);
             vOriginalPoster = (TextView)v.findViewById(R.id.carpool_original_poster);
-            CardView cardView = (CardView)v.findViewById(R.id.card_view);
+            cardView = (CardView)v.findViewById(R.id.card_view);
+            container = (RelativeLayout)v.findViewById(R.id.container);
             cardView.setOnClickListener(this);
-
-            mListener = listener;
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            Log.v("yay item was clicked - ", String.valueOf(position));
+
+            if (mFragment.getHome().multipane) {
+                container.setSelected(true);
+                lastSelected = position;
+                if (lastContainer != null)
+                    lastContainer.setSelected(false);
+                lastContainer = container;
+            }
             mListener.onSelect(position);
         }
     }

@@ -21,7 +21,7 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
 
     private int mType; // requests or offers
 
-    private int mLastSelected = 0;
+    public int mLastSelected = 0;
 
     private void refreshData() {
 
@@ -62,7 +62,7 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
         });
     }
 
-    private HomeFragment getHome() {
+    public HomeFragment getHome() {
         return (HomeFragment)getParentFragment();
     }
 

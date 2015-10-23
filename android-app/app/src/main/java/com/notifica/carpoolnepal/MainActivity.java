@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
 
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-                    int position = recyclerView.getChildPosition(child) - 1;
+                    int position = recyclerView.getChildAdapterPosition(child) - 1;
                     if (position >= 0)
                         displayView(position);
                     return true;
