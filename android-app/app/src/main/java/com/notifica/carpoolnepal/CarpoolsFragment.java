@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelectionListener {
-    private List<Carpool> mCarpoolList =  new ArrayList<>(); // Initialize by empty list
     private RecyclerView.Adapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -25,16 +25,13 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
 
     private void refreshData() {
 
-        // Now get all carpools as list
-        List<Carpool> list = Carpool.find(Carpool.class, "type=" + mType); // 1 == request, 0 == offer
-        // To filter list by location, use carpool.source and carpool.destination
-
         // We can't just create new list since adapter already has a reference to the original list
         // Instead replace all items in the mCarpoolList by new list
-        mCarpoolList.clear();
-        for (Carpool c: list)
-            mCarpoolList.add(c);
+        getHome().refreshData();
+        changeList();
+    }
 
+    public void changeList() {
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }
@@ -42,9 +39,12 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(false);
 
-        if (mCarpoolList.size() > 0 && ((HomeFragment)getParentFragment()).multipane)
+        if (((mType == 0 && getHome().mOffersList.size() > 0) || (mType == 1 && getHome().mRequestsList.size() > 0))
+                && ((HomeFragment)getParentFragment()).multipane)
             onSelect(mLastSelected);
     }
+
+
 
     private void getData(){
         // First download all carpools from server
@@ -62,6 +62,9 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
         });
     }
 
+    private HomeFragment getHome() {
+        return (HomeFragment)getParentFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,7 +79,14 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
         layoutManager = new LinearLayoutManager(rootView.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new CarpoolAdapter(mCarpoolList, this);
+        Bundle args = getArguments();
+        mType = args.getInt("type");
+
+        if (mType == 0)
+            mAdapter = new CarpoolAdapter(getHome().mOffersList, this);
+        else
+            mAdapter = new CarpoolAdapter(getHome().mRequestsList, this);
+
         recyclerView.setAdapter(mAdapter);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
@@ -87,9 +97,6 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
             }
         });
 
-        Bundle args = getArguments();
-        mType = args.getInt("type");
-
         refreshData();
         getData();
 
@@ -98,8 +105,20 @@ public class CarpoolsFragment extends Fragment implements Listeners.CarpoolSelec
 
     @Override
     public void onSelect(int position) {
-        HomeFragment home = (HomeFragment)getParentFragment();
-        home.showDetails(mCarpoolList.get(position));
+        if (mType == 0)
+            getHome().showDetails(getHome().mOffersList.get(position));
+        else
+            getHome().showDetails(getHome().mRequestsList.get(position));
+
         mLastSelected = position;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            refreshData();
+            Log.d("Carpool list visible", mType+"");
+        }
     }
 }

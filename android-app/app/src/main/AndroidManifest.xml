@@ -86,6 +86,10 @@
             android:name=".CarpoolDetailActivity"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity
+        android:name=".NewCarpoolActivity"
+        android:label="@string/title_activity_main" >
+    </activity>
     </application>
 
 </manifest>
