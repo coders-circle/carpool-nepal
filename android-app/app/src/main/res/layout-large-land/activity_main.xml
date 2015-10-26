@@ -38,7 +38,7 @@
                 android:background="@drawable/fab_background"
                 android:elevation="10dp"
                 android:id="@+id/fab_add"
-                android:layout_gravity="right|bottom" />
+                android:layout_gravity="left|bottom" />
 
         </FrameLayout>
 

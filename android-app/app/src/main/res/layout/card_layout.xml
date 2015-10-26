@@ -17,8 +17,7 @@
         android:focusable="true"
         android:foreground="@drawable/card_foreground"
 
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="1dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp">
 
@@ -33,18 +32,18 @@
                 android:id="@+id/carpool_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="4dp"
                 android:text="2:00 PM, Saturday"
                 android:textColor="@color/accent"
                 android:paddingLeft="20dp"
-                android:textSize="26sp"
+                android:textSize="18sp"
                 android:gravity="center_vertical"/>
 
             <ImageView
                 android:id="@+id/carpool_location_icon"
                 android:layout_marginLeft="20dp"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:src="@android:drawable/ic_menu_mylocation"
                 android:tint="@color/icons"
                 android:layout_below="@id/carpool_time"
@@ -52,10 +51,9 @@
 
             <TextView
                 android:id="@+id/carpool_source_destination"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:text="Source to Destination"
                 android:gravity="center_vertical"
                 android:layout_below="@id/carpool_time"
@@ -67,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:text="the description of the ride goes here"
                 android:layout_below="@id/carpool_location_icon"
                 android:gravity="center_vertical"/>
@@ -76,7 +74,7 @@
                 android:id="@+id/carpool_original_poster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="20dp"
                 android:text="Mr. Absolute Zero"
                 android:layout_alignParentRight="true"
